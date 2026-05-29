@@ -46,7 +46,11 @@ export default function Contact() {
             
             <div>
               <h4 className="uppercase tracking-widest text-lux-gold text-sm font-semibold mb-3">WhatsApp Private Line</h4>
-              <p className="font-serif text-2xl text-lux-dark">+1 (800) LUX-URA</p>
+              <p className="font-serif text-2xl text-lux-dark">
+                <a href="https://wa.me/14039717695" target="_blank" rel="noopener noreferrer" className="hover:text-lux-gold transition-colors">
+                  +1 (403) 971-7695
+                </a>
+              </p>
             </div>
 
             <div>
