@@ -798,10 +798,21 @@ export default function Collections() {
   }
 
   // Exclude static products that are already loaded from the database to prevent duplicates
-  const allProducts = [
+  const combinedProducts = [
     ...dynamicProducts,
     ...products.filter(p => !dynamicProducts.some(dp => dp.name.trim().toLowerCase() === p.name.trim().toLowerCase() || dp.image === p.image))
   ].map(adjustProductCategory);
+
+  // Deduplicate products by name (trim + lowercase)
+  const allProducts: Product[] = [];
+  const seenNames = new Set<string>();
+  for (const p of combinedProducts) {
+    const key = p.name.trim().toLowerCase();
+    if (!seenNames.has(key)) {
+      seenNames.add(key);
+      allProducts.push(p);
+    }
+  }
 
   const filteredProducts = selectedCategory === "All"
     ? allProducts
