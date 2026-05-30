@@ -837,6 +837,18 @@ export default function Collections() {
 
     setIsSubmitting(true);
 
+    const message = `Hello Luxura Team,
+
+I would like to request a bespoke commission for the following product:
+- Product: ${activeProduct.name}
+- Category: ${activeProduct.category}
+- Name: ${inquiryName}
+- Email: ${inquiryEmail}
+- Requirements: ${inquiryRequirements || "None"}`;
+
+    const waUrl = `https://wa.me/14039717695?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, "_blank");
+
     // Mockup success for demo
     setSubmitSuccess(true);
     // Success GSAP micro-animation

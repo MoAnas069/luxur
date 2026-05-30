@@ -1,10 +1,28 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 export default function Contact() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [details, setDetails] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const message = `Hello Luxura Team,
+
+I would like to request a private consultation. Here are my details:
+- Name: ${firstName} ${lastName}
+- Email: ${email}
+- Project Details: ${details}`;
+
+    const waUrl = `https://wa.me/14039717695?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, "_blank");
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -64,12 +82,15 @@ export default function Contact() {
 
         {/* Right Side: Form */}
         <div className="reveal-element bg-white p-10 md:p-14 shadow-sm border border-lux-border">
-          <form className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="flex flex-col">
                 <label className="uppercase tracking-widest text-xs text-lux-text-muted mb-2 font-semibold">First Name</label>
                 <input 
                   type="text" 
+                  required
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                   className="border-b border-lux-border py-3 bg-transparent font-sans text-lux-dark focus:outline-none focus:border-lux-gold transition-colors"
                 />
               </div>
@@ -77,6 +98,9 @@ export default function Contact() {
                 <label className="uppercase tracking-widest text-xs text-lux-text-muted mb-2 font-semibold">Last Name</label>
                 <input 
                   type="text" 
+                  required
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                   className="border-b border-lux-border py-3 bg-transparent font-sans text-lux-dark focus:outline-none focus:border-lux-gold transition-colors"
                 />
               </div>
@@ -86,6 +110,9 @@ export default function Contact() {
               <label className="uppercase tracking-widest text-xs text-lux-text-muted mb-2 font-semibold">Email Address</label>
               <input 
                 type="email" 
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="border-b border-lux-border py-3 bg-transparent font-sans text-lux-dark focus:outline-none focus:border-lux-gold transition-colors"
               />
             </div>
@@ -94,12 +121,15 @@ export default function Contact() {
               <label className="uppercase tracking-widest text-xs text-lux-text-muted mb-2 font-semibold">Project Details</label>
               <textarea 
                 rows={4}
+                required
+                value={details}
+                onChange={(e) => setDetails(e.target.value)}
                 className="border-b border-lux-border py-3 bg-transparent font-sans text-lux-dark focus:outline-none focus:border-lux-gold transition-colors resize-none"
               ></textarea>
             </div>
 
             <button 
-              type="button" 
+              type="submit" 
               className="w-full mt-4 py-4 bg-lux-dark text-white uppercase tracking-widest text-sm hover:bg-lux-gold transition-colors duration-500"
             >
               Submit Inquiry

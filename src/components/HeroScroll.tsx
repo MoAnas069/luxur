@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -138,8 +139,8 @@ export default function HeroScroll() {
     // Final Reveal: opacity 1 at 2800px (2.8). Starts at 2.4.
     tl.fromTo(
       "#hero-final",
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, ease: "power3.out", duration: 0.4 },
+      { opacity: 0, y: 30, pointerEvents: "none" },
+      { opacity: 1, y: 0, pointerEvents: "auto", ease: "power3.out", duration: 0.4 },
       2.4
     );
 
@@ -206,15 +207,27 @@ export default function HeroScroll() {
           </div>
 
           {/* Final Text */}
-          <div id="hero-final" className="absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-auto px-4 mt-12 md:mt-0">
+          <div id="hero-final" className="absolute inset-0 flex flex-col items-center justify-center opacity-0 pointer-events-none px-4 mt-12 md:mt-0">
             <h1 className="text-white font-serif text-4xl md:text-7xl lg:text-8xl tracking-wide mb-8 md:mb-10 leading-tight">
               Luxury, Composed <br className="hidden md:block"/> with Intention.
             </h1>
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full sm:w-auto px-6 sm:px-0">
-              <button className="w-full sm:w-auto px-6 py-4 bg-lux-gold text-white tracking-widest uppercase text-xs md:text-sm hover:bg-lux-gold-deep transition-colors duration-500">
-                Explore Collections
-              </button>
-              <button className="w-full sm:w-auto px-6 py-4 bg-transparent border border-white/30 text-white tracking-widest uppercase text-xs md:text-sm hover:bg-white/10 transition-colors duration-500">
+              <Link href="/collections" className="w-full sm:w-auto">
+                <button className="w-full px-6 py-4 bg-lux-gold text-white tracking-widest uppercase text-xs md:text-sm hover:bg-lux-gold-deep transition-colors duration-500">
+                  Explore Collections
+                </button>
+              </Link>
+              <button 
+                onClick={() => {
+                  const target = document.getElementById("contact-section");
+                  if (target) {
+                    target.scrollIntoView({ behavior: "smooth" });
+                  } else {
+                    window.location.href = "/#contact-section";
+                  }
+                }}
+                className="w-full sm:w-auto px-6 py-4 bg-transparent border border-white/30 text-white tracking-widest uppercase text-xs md:text-sm hover:bg-white/10 transition-colors duration-500"
+              >
                 Begin Your Project
               </button>
             </div>
