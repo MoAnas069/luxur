@@ -768,11 +768,26 @@ export default function Collections() {
     return "Living";
   }
 
+  function adjustProductCategory(prod: Product): Product {
+    const name = prod.name.toLowerCase();
+    if (
+      name.includes("chandelier") ||
+      name.includes("pendant") ||
+      name.includes("sconce") ||
+      name.includes("lighting") ||
+      name.includes("lamp") ||
+      name.includes("cluster")
+    ) {
+      return { ...prod, category: "Lighting" };
+    }
+    return prod;
+  }
+
   // Exclude static products that are already loaded from the database to prevent duplicates
   const allProducts = [
     ...dynamicProducts,
     ...products.filter(p => !dynamicProducts.some(dp => dp.name.trim().toLowerCase() === p.name.trim().toLowerCase() || dp.image === p.image))
-  ];
+  ].map(adjustProductCategory);
 
   const filteredProducts = selectedCategory === "All"
     ? allProducts
@@ -834,7 +849,7 @@ export default function Collections() {
                 Bespoke Catalog
               </span>
               <h2 className="font-serif text-4xl md:text-6xl text-lux-dark">
-                Singular <span className="italic text-lux-gold font-light">Chandeliers</span>
+                Curated <span className="italic text-lux-gold font-light">Collections</span>
               </h2>
             </div>
 
