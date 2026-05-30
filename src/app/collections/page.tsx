@@ -689,6 +689,7 @@ export default function Collections() {
   const galleryRef = useRef<HTMLDivElement>(null);
   
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [visibleCount, setVisibleCount] = useState<number>(12);
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const [showRightClickAlert, setShowRightClickAlert] = useState<boolean>(false);
   const [inquiryName, setInquiryName] = useState<string>("");
@@ -699,6 +700,7 @@ export default function Collections() {
 
   // Filter functionality with GSAP transition
   useEffect(() => {
+    setVisibleCount(12);
     const ctx = gsap.context(() => {
       const items = galleryRef.current?.querySelectorAll(".product-item-card");
       if (items && items.length > 0) {
@@ -818,6 +820,9 @@ export default function Collections() {
     ? allProducts
     : allProducts.filter(p => p.category === selectedCategory);
 
+  const displayedProducts = filteredProducts.slice(0, visibleCount);
+  const hasMore = filteredProducts.length > visibleCount;
+
   // Disabling context menu on images (Digital Asset Protection)
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -899,11 +904,11 @@ export default function Collections() {
 
           {/* Products Grid */}
           <div ref={galleryRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredProducts.map((prod) => (
+            {displayedProducts.map((prod) => (
               <div
                 key={prod.id}
                 onClick={() => setActiveProduct(prod)}
-                className="product-item-card group cursor-pointer flex flex-col justify-between h-full bg-white border border-lux-border/40 p-4 rounded-sm hover:shadow-[0_15px_50px_-20px_rgba(0,0,0,0.06)] hover:-translate-y-1.5 transition-all duration-700"
+                className="product-item-card group cursor-pointer flex flex-col justify-between h-full bg-white border border-lux-border/40 p-4 rounded-sm hover:shadow-[0_15px_50px_-20px_rgba(0,0,0,0.06)] hover:-translate-y-1.5 transition-[transform,box-shadow,border-color,background-color] duration-700"
               >
                 {/* Image Wrapper */}
                 <div className="relative aspect-[4/5] w-full overflow-hidden bg-lux-bg mb-6 rounded-sm">
@@ -947,6 +952,19 @@ export default function Collections() {
                 </div>
               </div>
             ))}
+
+            {/* Load More Button */}
+            {hasMore && (
+              <div className="col-span-full flex justify-center mt-12 mb-6">
+                <button
+                  onClick={() => setVisibleCount((prev) => prev + 12)}
+                  className="px-8 py-4 border border-lux-gold/30 hover:border-lux-gold bg-white hover:bg-lux-dark text-lux-dark hover:text-white text-xs uppercase tracking-[0.25em] font-semibold transition-all duration-700 rounded-sm shadow-sm flex items-center gap-3 group"
+                >
+                  Load More Masterpieces
+                  <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-500" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
