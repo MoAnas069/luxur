@@ -42,6 +42,8 @@ next-env.d.ts
 /push_increments.ps1
 /upload_assets.js
 /process_new_products.js
+/public/new images/*.png
+
 
 
 

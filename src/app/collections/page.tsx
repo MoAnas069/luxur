@@ -297,6 +297,83 @@ const products: Product[] = [
     dimensions: "90cm Diameter x 90cm H",
     origin: "Venice, Italy",
     designer: "Pietro Moretti"
+  },
+  {
+    id: "prod-30",
+    name: "Verona Marble Dining Table",
+    category: "Dining",
+    description: "Exquisite dining suite featuring a polished Carrara marble table top on architectural bases, set against natural stone paneling.",
+    image: "/new%20images/product_30.webp",
+    materials: "Carrara Marble, Brushed Brass, Lacquered Oak",
+    dimensions: "240cm W x 110cm D x 76cm H",
+    origin: "Verona, Italy",
+    designer: "Studio Castiglione"
+  },
+  {
+    id: "prod-31",
+    name: "Crema Marfil Round Dining Table",
+    category: "Dining",
+    description: "Sleek round dining table crafted from Spanish Crema Marfil marble with a ribbed pedestal base, paired with elegant leather armchairs.",
+    image: "/new%20images/product_31.webp",
+    materials: "Crema Marfil Marble, Walnut, Full-Grain Leather",
+    dimensions: "160cm Diameter x 75cm H",
+    origin: "Valencia, Spain",
+    designer: "Enzo Rossi"
+  },
+  {
+    id: "prod-32",
+    name: "Orion Gold Leaf Dining Table",
+    category: "Dining",
+    description: "An grand oval marble table supported by cylindrical gold-plated pillars, illuminated by a custom branching brass chandelier.",
+    image: "/new%20images/product_32.webp",
+    materials: "Calacatta Gold Marble, 24k Gold Plated Brass, Velvet",
+    dimensions: "280cm W x 120cm D x 76cm H",
+    origin: "Florence, Italy",
+    designer: "Marzia Colombo"
+  },
+  {
+    id: "prod-33",
+    name: "Metropolis Swivel Dining Table",
+    category: "Dining",
+    description: "A dramatic oval dining table in a bronzed metallic finish, surrounded by plush swivel chairs on circular bases, overlooking panoramic views.",
+    image: "/new%20images/product_33.webp",
+    materials: "Liquid Bronze Finish, Nubuck Leather, Steel",
+    dimensions: "260cm W x 115cm D x 75cm H",
+    origin: "New York, USA",
+    designer: "Gerrit Hoff"
+  },
+  {
+    id: "prod-34",
+    name: "Sienna Organic Wood Dining Table",
+    category: "Dining",
+    description: "A large dark marble-topped table set upon sculptural walnut wood supports, accompanied by designer chairs in a warm, biophilic space.",
+    image: "/new%20images/product_34.webp",
+    materials: "Nero Marquina Marble, American Walnut, Bouclé Fabric",
+    dimensions: "300cm W x 120cm D x 76cm H",
+    origin: "Tuscany, Italy",
+    designer: "Jean-Louis Dupont"
+  },
+  {
+    id: "prod-35",
+    name: "Palazzo Grey Sculptural Dining Suite",
+    category: "Dining",
+    description: "A contemporary dining set with a polished white marble table on ebonized bases, surrounded by grey velvet sculptural chairs.",
+    image: "/new%20images/product_35.webp",
+    materials: "White Statuario Marble, Ebonized Ash, Cotton Velvet",
+    dimensions: "270cm W x 110cm D x 75cm H",
+    origin: "Milan, Italy",
+    designer: "Studio Castiglione"
+  },
+  {
+    id: "prod-36",
+    name: "Nero Oro Luxury Dining Table",
+    category: "Dining",
+    description: "A massive block-style dining table made of Nero Portoro marble with polished gold brass inset panels, paired with elegant lion-head velvet chairs.",
+    image: "/new%20images/product_36.webp",
+    materials: "Nero Portoro Marble, Polished Brass, Silk Velvet",
+    dimensions: "320cm W x 110cm D x 76cm H",
+    origin: "Carrara, Italy",
+    designer: "Pietro Moretti"
   }
 ];
 
