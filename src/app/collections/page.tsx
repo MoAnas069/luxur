@@ -790,11 +790,14 @@ export default function Collections() {
     if (num >= 30 && num <= 36) {
       return { ...prod, category: "Dining" };
     }
-    if (num >= 37 && num <= 55) {
+    if (num >= 37 && num <= 46) {
       return { ...prod, category: "Living" };
     }
-    if (num >= 56 && num <= 64) {
+    if (num >= 47 && num <= 56) {
       return { ...prod, category: "Bedroom" };
+    }
+    if (num >= 57 && num <= 64) {
+      return { ...prod, category: "Dining" };
     }
     return prod;
   }
