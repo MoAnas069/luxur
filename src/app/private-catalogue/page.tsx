@@ -29,99 +29,6 @@ interface CatalogueEntry {
   category: string;
 }
 
-const catalogues: CatalogueEntry[] = [
-  {
-    id: "volume-1",
-    title: "The Milano Collection",
-    subtitle: "Italian Luxury Living",
-    cover: "/images/cover_volume1.webp",
-    src: "/magazines/volume%201.html",
-    year: "2026",
-    category: "Living Room",
-  },
-  {
-    id: "volume-2",
-    title: "Nocturne",
-    subtitle: "Moody Bedroom Elegance",
-    cover: "/images/cover_volume2.webp",
-    src: "/magazines/volume%202.html",
-    year: "2026",
-    category: "Bedroom",
-  },
-  {
-    id: "volume-3",
-    title: "Oak & Iron",
-    subtitle: "Handcrafted Dining",
-    cover: "/images/cover_volume3.webp",
-    src: "/magazines/volume%203.html",
-    year: "2026",
-    category: "Dining",
-  },
-  {
-    id: "volume-4",
-    title: "Lumina",
-    subtitle: "Architectural Lighting",
-    cover: "/images/cover_volume4.webp",
-    src: "/magazines/volume%204.html",
-    year: "2026",
-    category: "Lighting",
-  },
-  {
-    id: "volume-5",
-    title: "The Nature of Light",
-    subtitle: "Architectural Lighting Series",
-    cover: "/images/cover_volume5.webp",
-    src: "/magazines/volume%205.html",
-    year: "2026",
-    category: "Lighting",
-  },
-  {
-    id: "volume-6",
-    title: "Marbre",
-    subtitle: "Luxury Bath & Stone",
-    cover: "/images/cover_volume6.webp",
-    src: "/magazines/volume%206.html",
-    year: "2026",
-    category: "Bathroom",
-  },
-  {
-    id: "volume-7",
-    title: "The Italian Art of Living",
-    subtitle: "Aesthetics of Life",
-    cover: "/images/cover_volume7.webp",
-    src: "/magazines/volume%207.html",
-    year: "2026",
-    category: "Living Room",
-  },
-  {
-    id: "volume-8",
-    title: "The Art of Restoration",
-    subtitle: "Classic & Antique Care",
-    cover: "/images/cover_volume8.webp",
-    src: "/magazines/volume%208.html",
-    year: "2026",
-    category: "Restoration",
-  },
-  {
-    id: "volume-9",
-    title: "Sculpted Light II",
-    subtitle: "Architectural Lighting Series",
-    cover: "/images/cover_volume9.webp",
-    src: "/magazines/volume%209.html",
-    year: "2026",
-    category: "Lighting",
-  },
-  {
-    id: "volume-16",
-    title: "Atelier",
-    subtitle: "Volume XVI Chandelier Mix",
-    cover: "/images/cover_volume16.webp",
-    src: "/magazines/16_LU_MIX.pdf",
-    year: "2026",
-    category: "Custom",
-  },
-];
-
 export default function PrivateCataloguePage() {
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -164,7 +71,7 @@ export default function PrivateCataloguePage() {
     fetchMagazines();
   }, []);
 
-  const allCatalogues = [...dynamicCatalogues, ...catalogues];
+  const allCatalogues = dynamicCatalogues;
 
   // Access gate
   useEffect(() => {
