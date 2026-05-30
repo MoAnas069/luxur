@@ -11,6 +11,32 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Luxura",
+  "url": "https://luxurafurniture.com",
+  "logo": "https://luxurafurniture.com/favicon.svg",
+  "description": "Luxury is composed with intention. Global sourcing and bespoke interiors curated for refined living.",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1-403-971-7695",
+    "contactType": "concierge",
+    "email": "concierge@luxura.com"
+  },
+  "sameAs": [
+    "https://www.instagram.com/luxurafurniture?igsh=b2g2ODZwbGI2Ymtj&utm_source=qr",
+    "https://www.facebook.com/share/1BpDjfBXTs/?mibextid=wwXIfr"
+  ]
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Luxura | Global Sourcing & Curated Interiors",
+  "url": "https://luxurafurniture.com"
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -22,6 +48,16 @@ export default function RootLayout({
       suppressHydrationWarning
       className="antialiased selection:bg-lux-gold selection:text-white"
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+      </head>
       <body className="bg-lux-bg text-lux-text min-h-screen flex flex-col font-sans">
         <SmoothScroll>
           <Navbar />
