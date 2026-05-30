@@ -40,4 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /push_increments.ps1
+/upload_assets.js
+
 
