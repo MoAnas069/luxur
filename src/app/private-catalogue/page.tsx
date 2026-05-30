@@ -6,6 +6,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import dynamic from "next/dynamic";
 import { BookOpen, Eye } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -128,6 +129,42 @@ export default function PrivateCataloguePage() {
   const [isChecking, setIsChecking] = useState(true);
   const [activeMagazine, setActiveMagazine] = useState<CatalogueEntry | null>(null);
   const [userName, setUserName] = useState("");
+  const [dynamicCatalogues, setDynamicCatalogues] = useState<CatalogueEntry[]>([]);
+
+  useEffect(() => {
+    async function fetchMagazines() {
+      try {
+        const { data, error } = await supabase
+          .from("magazines")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Error fetching magazines from Supabase:", error);
+          return;
+        }
+
+        if (data) {
+          const mapped: CatalogueEntry[] = data.map((row: any) => ({
+            id: `db-${row.id}`,
+            title: row.title || "Untitled Lookbook",
+            subtitle: row.issue || row.description || "Private Catalogue",
+            cover: row.cover_url || "/images/cover_fallback.webp",
+            src: row.pdf_url,
+            year: row.published_at ? new Date(row.published_at).getFullYear().toString() : new Date().getFullYear().toString(),
+            category: row.category || "Catalogue"
+          }));
+          setDynamicCatalogues(mapped);
+        }
+      } catch (err) {
+        console.error("Unexpected error fetching magazines:", err);
+      }
+    }
+
+    fetchMagazines();
+  }, []);
+
+  const allCatalogues = [...dynamicCatalogues, ...catalogues];
 
   // Access gate
   useEffect(() => {
@@ -235,7 +272,7 @@ export default function PrivateCataloguePage() {
       {/* Magazine Grid */}
       <div className="px-6 md:px-12 pb-32">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-          {catalogues.map((cat) => (
+          {allCatalogues.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveMagazine(cat)}

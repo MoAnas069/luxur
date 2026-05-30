@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { X, ArrowRight, Sparkles, Globe, Compass } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -334,9 +336,58 @@ export default function Collections() {
     return () => ctx.revert();
   }, [selectedCategory]);
 
+  const [dynamicProducts, setDynamicProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    async function fetchPhotos() {
+      try {
+        const { data, error } = await supabase
+          .from("photos")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Error fetching photos from Supabase:", error);
+          return;
+        }
+
+        if (data) {
+          const mapped: Product[] = data.map((row: any) => ({
+            id: `db-${row.id}`,
+            name: row.caption || row.title || "Untitled Piece",
+            category: mapCategory(row.category),
+            description: row.description || "Bespoke piece sourced directly from our global network of ateliers.",
+            image: row.image_url,
+            materials: row.materials || "Curated Selection",
+            dimensions: row.dimensions || "Custom spec on request",
+            origin: row.origin || "Global Sourced",
+            designer: row.designer || "Luxura Curation"
+          }));
+          setDynamicProducts(mapped);
+        }
+      } catch (err) {
+        console.error("Unexpected error fetching photos:", err);
+      }
+    }
+
+    fetchPhotos();
+  }, []);
+
+  function mapCategory(dbCat: string): "Living" | "Dining" | "Bedroom" | "Lighting" {
+    if (!dbCat) return "Living";
+    const c = dbCat.toLowerCase();
+    if (c.includes("living")) return "Living";
+    if (c.includes("dining")) return "Dining";
+    if (c.includes("bed")) return "Bedroom";
+    if (c.includes("light")) return "Lighting";
+    return "Living";
+  }
+
+  const allProducts = [...dynamicProducts, ...products];
+
   const filteredProducts = selectedCategory === "All"
-    ? products
-    : products.filter(p => p.category === selectedCategory);
+    ? allProducts
+    : allProducts.filter(p => p.category === selectedCategory);
 
   // Disabling context menu on images (Digital Asset Protection)
   const handleContextMenu = (e: React.MouseEvent) => {
