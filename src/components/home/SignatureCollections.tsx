@@ -1,16 +1,17 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const collections = [
-  { id: 1, title: "The Milano Collection", src: "/new%20images/product_01.webp", width: "w-full md:w-2/3" },
-  { id: 2, title: "Oak & Iron", src: "/new%20images/product_09.webp", width: "w-full md:w-1/3" },
-  { id: 3, title: "Nocturne", src: "/new%20images/product_15.webp", width: "w-full md:w-1/2" },
-  { id: 4, title: "Lumina", src: "/new%20images/product_22.webp", width: "w-full md:w-1/2" },
+  { id: 1, title: "The Milano Collection", src: "https://rkecfnssedbsccpynwwx.supabase.co/storage/v1/object/public/photos/1780155444048-product-01.webp", width: "w-full md:w-2/3" },
+  { id: 2, title: "Oak & Iron", src: "https://rkecfnssedbsccpynwwx.supabase.co/storage/v1/object/public/photos/1780155487770-product-09.webp", width: "w-full md:w-1/3" },
+  { id: 3, title: "Nocturne", src: "https://rkecfnssedbsccpynwwx.supabase.co/storage/v1/object/public/photos/1780155538472-product-15.webp", width: "w-full md:w-1/2" },
+  { id: 4, title: "Lumina", src: "https://rkecfnssedbsccpynwwx.supabase.co/storage/v1/object/public/photos/1780155588665-product-22.webp", width: "w-full md:w-1/2" },
 ];
 
 export default function SignatureCollections() {
@@ -46,7 +47,14 @@ export default function SignatureCollections() {
           {collections.map((item, index) => (
             <div key={item.id} className={`collection-card relative group cursor-pointer overflow-hidden ${item.width} h-[500px] md:h-[700px]`}>
               <div className="absolute inset-0 transition-transform duration-1000 ease-out group-hover:scale-105">
-                <img src={item.src} alt={item.title} className="w-full h-full object-cover" />
+                <Image
+                  src={item.src}
+                  alt={item.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover"
+                  priority={index < 2}
+                />
               </div>
               <div className="absolute inset-0 bg-lux-dark/10 transition-opacity duration-700 group-hover:bg-lux-dark/40" />
               <div className="absolute inset-0 p-10 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-700">
