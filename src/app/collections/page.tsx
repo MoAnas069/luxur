@@ -768,17 +768,31 @@ export default function Collections() {
     return "Living";
   }
 
+  function getProductNumber(prod: Product): number {
+    const imgMatch = prod.image.match(/product[_-](\d+)/i);
+    if (imgMatch) {
+      return parseInt(imgMatch[1], 10);
+    }
+    const idMatch = prod.id.match(/^prod-(\d+)$/);
+    if (idMatch) {
+      return parseInt(idMatch[1], 10);
+    }
+    return 0;
+  }
+
   function adjustProductCategory(prod: Product): Product {
-    const name = prod.name.toLowerCase();
-    if (
-      name.includes("chandelier") ||
-      name.includes("pendant") ||
-      name.includes("sconce") ||
-      name.includes("lighting") ||
-      name.includes("lamp") ||
-      name.includes("cluster")
-    ) {
+    const num = getProductNumber(prod);
+    if (num >= 1 && num <= 29) {
       return { ...prod, category: "Lighting" };
+    }
+    if (num >= 30 && num <= 36) {
+      return { ...prod, category: "Dining" };
+    }
+    if (num >= 37 && num <= 55) {
+      return { ...prod, category: "Living" };
+    }
+    if (num >= 56 && num <= 64) {
+      return { ...prod, category: "Bedroom" };
     }
     return prod;
   }
