@@ -460,7 +460,11 @@ export default function Collections() {
     return "Living";
   }
 
-  const allProducts = [...dynamicProducts, ...products];
+  // Exclude static products that are already loaded from the database to prevent duplicates
+  const allProducts = [
+    ...dynamicProducts,
+    ...products.filter(p => !dynamicProducts.some(dp => dp.name.trim().toLowerCase() === p.name.trim().toLowerCase() || dp.image === p.image))
+  ];
 
   const filteredProducts = selectedCategory === "All"
     ? allProducts
