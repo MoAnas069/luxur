@@ -1,41 +1,50 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://luxurafurniture.com";
+  const baseUrl = "https://luxurafurniture.com";
 
-  // List of public routes
-  const routes = [
+  return [
     {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
+      url: `${baseUrl}/`,
+      lastModified: new Date("2026-05-30"),
+      changeFrequency: "weekly",
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/collections`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
+      lastModified: new Date("2026-05-30"),
+      changeFrequency: "weekly",
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/magazines`,
+      lastModified: new Date("2026-05-30"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/private-catalogue`,
+      lastModified: new Date("2026-05-30"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: new Date("2026-05-30"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/services`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
+      lastModified: new Date("2026-05-30"),
+      changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
+      lastModified: new Date("2026-05-30"),
+      changeFrequency: "monthly",
       priority: 0.7,
     },
   ];
-
-  return routes;
 }
