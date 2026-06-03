@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 interface Product {
   id: string;
   name: string;
-  category: "Living" | "Dining" | "Bedroom" | "Lighting";
+  category: string;
   description: string;
   image: string;
   materials: string;
@@ -760,14 +760,9 @@ export default function Collections() {
     fetchPhotos();
   }, []);
 
-  function mapCategory(dbCat: string): "Living" | "Dining" | "Bedroom" | "Lighting" {
+  function mapCategory(dbCat: string): string {
     if (!dbCat) return "Living";
-    const c = dbCat.toLowerCase();
-    if (c.includes("living")) return "Living";
-    if (c.includes("dining")) return "Dining";
-    if (c.includes("bed")) return "Bedroom";
-    if (c.includes("light")) return "Lighting";
-    return "Living";
+    return dbCat.trim();
   }
 
   function getProductNumber(prod: Product): number {
@@ -803,10 +798,12 @@ export default function Collections() {
   }
 
   // Exclude static products that are already loaded from the database to prevent duplicates
+  const correctedStaticProducts = products.map(adjustProductCategory);
+  
   const combinedProducts = [
     ...dynamicProducts,
-    ...products.filter(p => !dynamicProducts.some(dp => dp.name.trim().toLowerCase() === p.name.trim().toLowerCase() || dp.image === p.image))
-  ].map(adjustProductCategory);
+    ...correctedStaticProducts.filter(p => !dynamicProducts.some(dp => dp.name.trim().toLowerCase() === p.name.trim().toLowerCase() || dp.image === p.image))
+  ];
 
   // Deduplicate products by name (trim + lowercase)
   const allProducts: Product[] = [];
@@ -872,7 +869,7 @@ I would like to request a bespoke commission for the following product:
     setInquiryRequirements("");
   };
 
-  const categories = ["All", "Living", "Dining", "Bedroom", "Lighting"];
+  const categories = ["All", ...Array.from(new Set(allProducts.map(p => p.category)))];
 
   return (
     <div className="bg-lux-bg min-h-screen relative overflow-hidden">
