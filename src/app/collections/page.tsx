@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { X, ArrowRight, Sparkles, Globe, Compass } from "lucide-react";
@@ -915,21 +916,22 @@ I would like to request a bespoke commission for the following product:
           </div>
 
           {/* Products Grid */}
-          <div ref={galleryRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div ref={galleryRef} className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8">
             {displayedProducts.map((prod) => (
               <div
                 key={prod.id}
                 onClick={() => setActiveProduct(prod)}
-                className="product-item-card group cursor-pointer flex flex-col justify-between h-full bg-white border border-lux-border/40 p-4 rounded-sm hover:shadow-[0_15px_50px_-20px_rgba(0,0,0,0.06)] hover:-translate-y-1.5 transition-[transform,box-shadow,border-color,background-color] duration-700"
+                className="product-item-card group cursor-pointer flex flex-col justify-between h-full bg-white border border-lux-border/40 p-3 sm:p-4 rounded-sm hover:shadow-[0_15px_50px_-20px_rgba(0,0,0,0.06)] hover:-translate-y-1.5 transition-[transform,box-shadow,border-color,background-color] duration-700"
               >
                 {/* Image Wrapper */}
-                <div className="relative aspect-[4/5] w-full overflow-hidden bg-lux-bg mb-6 rounded-sm">
-                  <img
+                <div className="relative aspect-[4/5] w-full overflow-hidden bg-lux-bg mb-4 sm:mb-6 rounded-sm">
+                  <Image
                     src={prod.image}
                     alt={prod.name}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03]"
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="object-cover transition-transform duration-1000 group-hover:scale-[1.03]"
                     onContextMenu={handleContextMenu}
-                    loading="lazy"
                   />
                   {/* Subtle hover zoom overlay */}
                   <div className="absolute inset-0 bg-lux-dark/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -995,18 +997,31 @@ I would like to request a bespoke commission for the following product:
       {activeProduct && (
         <div className="fixed inset-0 z-[100] bg-lux-dark/70 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
           {/* Main Modal Panel */}
-          <div className="bg-lux-bg-alt border border-lux-border/60 max-w-5xl w-full rounded-sm shadow-2xl overflow-hidden relative grid grid-cols-1 md:grid-cols-12 max-h-[92vh]">
+          <div className="bg-lux-bg-alt border border-lux-border/60 max-w-5xl w-full rounded-sm shadow-2xl overflow-hidden relative flex flex-col md:grid md:grid-cols-12 h-[92vh] md:h-auto max-h-[92vh]">
             
             {/* Close Button */}
             <button
               onClick={closeModal}
-              className="absolute top-6 right-6 z-50 w-10 h-10 rounded-full border border-lux-dark/10 bg-white/60 backdrop-blur-md flex items-center justify-center text-lux-dark hover:text-lux-gold hover:border-lux-gold hover:rotate-90 transition-all duration-700"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 w-10 h-10 rounded-full border border-lux-dark/10 bg-white/60 backdrop-blur-md flex items-center justify-center text-lux-dark hover:text-lux-gold hover:border-lux-gold hover:rotate-90 transition-all duration-700"
             >
               <X size={18} strokeWidth={1.5} />
             </button>
 
+            {/* Mobile Image (visible only on mobile) */}
+            <div className="block md:hidden w-full h-[35vh] relative overflow-hidden bg-lux-dark shrink-0">
+              <Image
+                src={activeProduct.image}
+                alt={activeProduct.name}
+                fill
+                sizes="(max-width: 768px) 100vw"
+                className="object-cover"
+                onContextMenu={handleContextMenu}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+            </div>
+
             {/* Left Specs & Inquiry Column (7 cols) */}
-            <div className="md:col-span-7 p-8 md:p-12 overflow-y-auto max-h-[92vh]">
+            <div className="flex-1 md:col-span-7 p-6 sm:p-8 md:p-12 overflow-y-auto min-h-0 md:max-h-[92vh]">
               <span className="uppercase tracking-[0.35em] text-[9px] text-lux-gold font-semibold mb-4 block">
                 Singular Specimen
               </span>
@@ -1024,7 +1039,7 @@ I would like to request a bespoke commission for the following product:
                   <span>Origin: <strong className="text-lux-dark font-medium">{activeProduct.origin}</strong></span>
                 </div>
               </div>
-
+              
               <p className="font-sans text-base text-lux-text-muted font-light leading-relaxed mb-10 border-b border-lux-border pb-8">
                 {activeProduct.description}
               </p>
@@ -1136,10 +1151,12 @@ I would like to request a bespoke commission for the following product:
 
             {/* Right Image Column (5 cols) */}
             <div className="hidden md:block md:col-span-5 h-[92vh] relative overflow-hidden bg-lux-dark">
-              <img
+              <Image
                 src={activeProduct.image}
                 alt={activeProduct.name}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
+                fill
+                sizes="(max-width: 1200px) 40vw, 33vw"
+                className="object-cover transition-transform duration-1000 hover:scale-105"
                 onContextMenu={handleContextMenu}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
