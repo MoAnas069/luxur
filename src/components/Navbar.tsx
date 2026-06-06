@@ -21,6 +21,7 @@ export default function Navbar() {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Collections", href: "/collections" },
+    { label: "Sourcing", href: "/sourcing" },
     { label: "Services", href: "/services" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
@@ -37,7 +38,7 @@ export default function Navbar() {
       } ${headerTextColor}`}
     >
       <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-serif tracking-widest uppercase relative z-50">
+        <Link href="/" className="text-3xl md:text-4xl font-serif tracking-widest uppercase relative z-50">
           Luxura
         </Link>
 

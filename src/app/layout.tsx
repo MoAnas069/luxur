@@ -22,7 +22,7 @@ const organizationSchema = {
     "@type": "ContactPoint",
     "telephone": "+1-403-971-7695",
     "contactType": "concierge",
-    "email": "concierge@luxura.com"
+    "email": "support@luxurafurnitures.com"
   },
   "sameAs": [
     "https://www.instagram.com/luxurafurniture?igsh=b2g2ODZwbGI2Ymtj&utm_source=qr",

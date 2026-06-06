@@ -37,6 +37,7 @@ export default function PrivateCataloguePage() {
   const [activeMagazine, setActiveMagazine] = useState<CatalogueEntry | null>(null);
   const [userName, setUserName] = useState("");
   const [dynamicCatalogues, setDynamicCatalogues] = useState<CatalogueEntry[]>([]);
+  const [coverErrors, setCoverErrors] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     async function fetchMagazines() {
@@ -188,11 +189,14 @@ export default function PrivateCataloguePage() {
               {/* Cover Image */}
               <div className="relative aspect-[3/4] overflow-hidden">
                 <img
-                  src={cat.cover}
+                  src={coverErrors[cat.id] ? "/images/curated_collections.webp" : cat.cover}
                   alt={cat.title}
                   className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
                   draggable={false}
                   onContextMenu={(e) => e.preventDefault()}
+                  onError={() => {
+                    setCoverErrors((prev) => ({ ...prev, [cat.id]: true }));
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-700" />
 

@@ -58,23 +58,18 @@ I would like to request a private consultation. Here are my details:
 
           <div className="space-y-12">
             <div>
-              <h4 className="uppercase tracking-widest text-lux-gold text-sm font-semibold mb-3">Direct Inquiry</h4>
-              <p className="font-serif text-2xl text-lux-dark">concierge@luxura.com</p>
-            </div>
-            
-            <div>
-              <h4 className="uppercase tracking-widest text-lux-gold text-sm font-semibold mb-3">WhatsApp Private Line</h4>
+              <h4 className="uppercase tracking-widest text-lux-gold text-sm font-semibold mb-3">Contact</h4>
               <p className="font-serif text-2xl text-lux-dark">
-                <a href="https://wa.me/14039717695" target="_blank" rel="noopener noreferrer" className="hover:text-lux-gold transition-colors">
-                  +1 (403) 971-7695
+                <a href="mailto:support@luxurafurnitures.com" className="hover:text-lux-gold transition-colors">
+                  support@luxurafurnitures.com
                 </a>
               </p>
             </div>
 
             <div>
-              <h4 className="uppercase tracking-widest text-lux-gold text-sm font-semibold mb-3">Service Regions</h4>
+              <h4 className="uppercase tracking-widest text-lux-gold text-sm font-semibold mb-3">Service region</h4>
               <p className="font-sans font-light text-lux-text-muted text-lg">
-                London • New York • Dubai • Paris • Los Angeles
+                Canada • USA • UK • India • Australia & UAE
               </p>
             </div>
           </div>

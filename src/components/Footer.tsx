@@ -40,7 +40,7 @@ export default function Footer() {
         <div>
           <h4 className="font-serif text-lg mb-6 uppercase tracking-widest">Explore</h4>
           <ul className="flex flex-col gap-4">
-            {["Collections", "Services", "About", "Contact"].map((item) => (
+            {["Collections", "Sourcing", "Services", "About", "Contact"].map((item) => (
               <li key={item}>
                 <Link
                   href={`/${item.toLowerCase()}`}
@@ -57,34 +57,22 @@ export default function Footer() {
           <h4 className="font-serif text-lg mb-6 uppercase tracking-widest">Inquiries</h4>
           <ul className="flex flex-col gap-4">
             <li className="text-lux-text-muted">
-              <a href="mailto:concierge@luxura.com" className="hover:text-lux-gold transition-colors">
-                concierge@luxura.com
+              <a href="mailto:support@luxurafurnitures.com" className="hover:text-lux-gold transition-colors">
+                support@luxurafurnitures.com
               </a>
             </li>
             <li className="text-lux-text-muted">
               <a href="https://wa.me/14039717695" target="_blank" rel="noopener noreferrer" className="hover:text-lux-gold transition-colors">
-                +1 (403) 971-7695 (WhatsApp)
+                +1 (403) 971-7695
               </a>
             </li>
-            <li className="text-lux-text-muted mt-4">London • New York • Dubai</li>
+            <li className="text-lux-text-muted mt-4">Canada • USA • UK • India • Australia & UAE</li>
           </ul>
         </div>
       </div>
 
       <div className="container mx-auto px-6 md:px-12 mt-20 pt-8 border-t border-lux-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-lux-text-muted">
-        <p>&copy; {new Date().getFullYear()} Luxura. All rights reserved.</p>
-        
-        <div className="flex items-center gap-2">
-          <span className="text-lux-text-muted/60">Designed & Developed by</span>
-          <a
-            href="https://www.instagram.com/intellex.web?igsh=dzEzNndldXJjNDdj"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-lux-gold hover:underline transition-all font-medium tracking-wide"
-          >
-            Intellex
-          </a>
-        </div>
+        <p>&copy; 2018 Luxura. All rights reserved.</p>
 
         <div className="flex gap-6">
           <Link href="/privacy" className="hover:text-lux-gold transition-colors">
