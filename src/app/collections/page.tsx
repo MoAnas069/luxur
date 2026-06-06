@@ -125,6 +125,7 @@ export default function Collections() {
     const deduped: Product[] = [];
     const seenNames = new Set<string>();
     for (const p of combinedProducts) {
+      if (!p.image || p.image.trim() === "") continue;
       const key = p.name.trim().toLowerCase();
       if (!seenNames.has(key)) {
         seenNames.add(key);
@@ -141,9 +142,10 @@ export default function Collections() {
     return shuffled;
   }, [dynamicProducts]);
 
-  const filteredProducts = selectedCategory === "All"
+  const filteredProducts = (selectedCategory === "All"
     ? allProducts
-    : allProducts.filter(p => p.category === selectedCategory);
+    : allProducts.filter(p => p.category === selectedCategory)
+  ).filter(p => !imageErrors[p.id]);
 
   const displayedProducts = filteredProducts.slice(0, visibleCount);
   const hasMore = filteredProducts.length > visibleCount;

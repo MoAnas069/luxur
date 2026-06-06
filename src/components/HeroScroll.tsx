@@ -24,7 +24,18 @@ export default function HeroScroll() {
     const airpods = { frame: 1 };
 
     const render = () => {
-      const img = images[airpods.frame - 1];
+      let img = images[airpods.frame - 1];
+      
+      // Fallback to nearest loaded frame backward if the targeted frame is still downloading
+      if (!img || !img.complete || img.naturalWidth === 0) {
+        for (let i = airpods.frame - 1; i >= 0; i--) {
+          if (images[i] && images[i].complete && images[i].naturalWidth !== 0) {
+            img = images[i];
+            break;
+          }
+        }
+      }
+
       if (img && img.complete && img.naturalWidth !== 0) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.imageSmoothingEnabled = true;
@@ -59,22 +70,62 @@ export default function HeroScroll() {
     const loadImages = () => {
       images.length = 0;
       setLoaded(false);
-      let loadedImages = 0;
       const folder = isMobile ? "luxfurphone" : "luxfurdesk";
 
-      for (let i = 1; i <= frameCount; i++) {
-        const img = new Image();
-        img.src = `/${folder}/frame_${String(i).padStart(4, "0")}.webp`;
-        img.onload = () => {
-          loadedImages++;
-          if (loadedImages === 1) {
-            render();
+      // 1. Load the first frame immediately for instant LCP render
+      const firstImg = new Image();
+      firstImg.src = `/${folder}/frame_0001.webp`;
+      firstImg.onload = () => {
+        images[0] = firstImg;
+        render();
+        
+        // 2. Defer bulk frames download to prevent network choking on mount
+        setTimeout(() => {
+          loadRemaining(folder);
+        }, 1200);
+      };
+      images.push(firstImg);
+
+      // Pre-allocate placeholders
+      for (let i = 2; i <= frameCount; i++) {
+        images.push(null as any);
+      }
+
+      function loadRemaining(folderName: string) {
+        let loadedRest = 1;
+        const batchSize = 10;
+        let currentIndex = 2;
+
+        function loadNextBatch() {
+          if (currentIndex > frameCount) return;
+          const limit = Math.min(currentIndex + batchSize - 1, frameCount);
+          
+          for (let i = currentIndex; i <= limit; i++) {
+            const img = new Image();
+            img.src = `/${folderName}/frame_${String(i).padStart(4, "0")}.webp`;
+            img.onload = () => {
+              images[i - 1] = img;
+              loadedRest++;
+              if (loadedRest === 10 || loadedRest === 50 || loadedRest === 100 || loadedRest === frameCount) {
+                render();
+              }
+              if (loadedRest === frameCount) {
+                setLoaded(true);
+              }
+            };
+            img.onerror = () => {
+              loadedRest++;
+              if (loadedRest === frameCount) {
+                setLoaded(true);
+              }
+            };
           }
-          if (loadedImages === frameCount) {
-            setLoaded(true);
-          }
-        };
-        images.push(img);
+          
+          currentIndex += batchSize;
+          setTimeout(loadNextBatch, 80);
+        }
+
+        loadNextBatch();
       }
     };
 
