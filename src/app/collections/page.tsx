@@ -93,9 +93,7 @@ export default function Collections() {
             name: row.caption || row.title || "Untitled Piece",
             category: mapCategory(row.category),
             description: row.description || "Bespoke piece sourced directly from our global network of ateliers.",
-            image: row.image_url && row.image_url.includes('magazine_img_')
-              ? `/new-collections-assets/${row.image_url.substring(row.image_url.lastIndexOf('/') + 1)}`
-              : row.image_url,
+            image: row.image_url,
             materials: row.materials || "Curated Selection",
             dimensions: row.dimensions || "Custom spec on request",
             origin: row.origin || "Global Sourced",
