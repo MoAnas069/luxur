@@ -13,6 +13,7 @@ export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    const subject = `Private Consultation Request - ${firstName} ${lastName}`;
     const message = `Hello Luxura Team,
 
 I would like to request a private consultation. Here are my details:
@@ -20,8 +21,8 @@ I would like to request a private consultation. Here are my details:
 - Email: ${email}
 - Project Details: ${details}`;
 
-    const waUrl = `https://wa.me/14039717695?text=${encodeURIComponent(message)}`;
-    window.open(waUrl, "_blank");
+    const mailtoUrl = `mailto:support@luxurafurniture.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+    window.location.href = mailtoUrl;
   };
 
   useEffect(() => {

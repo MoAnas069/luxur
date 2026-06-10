@@ -75,7 +75,7 @@ export default function ServicesTimeline() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative py-32 md:py-48 bg-[#FAF8F3] px-6 md:px-12 border-t border-lux-border/40">
+    <section ref={containerRef} className="relative py-20 md:py-48 bg-[#FAF8F3] px-6 md:px-12 border-t border-lux-border/40">
       {/* Subtle Grain Overlay */}
       <div
         className="absolute inset-0 opacity-[0.02] pointer-events-none mix-blend-overlay"
@@ -93,7 +93,7 @@ export default function ServicesTimeline() {
             <span className="uppercase tracking-[0.35em] text-[10px] text-lux-gold font-semibold mb-4 block">
               Behind the Scenes
             </span>
-            <h2 className="font-serif text-5xl md:text-7xl text-lux-dark leading-none mb-6">
+            <h2 className="font-serif text-4xl md:text-7xl text-lux-dark leading-none mb-6">
               Architecting <br />
               <span className="italic font-light text-lux-gold">The Process</span>
             </h2>
@@ -106,7 +106,7 @@ export default function ServicesTimeline() {
           <div className="relative aspect-[4/3] w-full overflow-hidden border border-lux-border/60 bg-lux-dark shadow-sm rounded-sm group">
             <div className="blueprint-img absolute inset-0 w-full h-[110%] -top-[5%]">
               <Image
-                src="/images/service_floor_plan.webp"
+                src="/images/arch.webp"
                 alt="Architectural Floor Plan Blueprint"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
@@ -134,13 +134,13 @@ export default function ServicesTimeline() {
           {timelineSteps.map((step) => (
             <div 
               key={step.step}
-              className="timeline-card group bg-white border border-lux-border/40 p-8 md:p-10 rounded-sm shadow-[0_4px_30px_rgba(0,0,0,0.01)] hover:shadow-[0_20px_50px_rgba(156,122,60,0.06)] hover:border-lux-gold/30 transition-all duration-700 relative"
+              className="timeline-card group bg-white border border-lux-border/40 p-6 md:p-10 rounded-sm shadow-[0_4px_30px_rgba(0,0,0,0.01)] hover:shadow-[0_20px_50px_rgba(156,122,60,0.06)] hover:border-lux-gold/30 transition-all duration-700 relative"
             >
               {/* Bullet Node */}
               <div className="absolute -left-[21px] md:-left-[37px] top-10 w-2.5 h-2.5 rounded-full bg-white border-2 border-lux-gold transition-transform duration-500 group-hover:scale-125" />
 
               <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-4 mb-6">
-                <h3 className="font-serif text-3xl text-lux-dark group-hover:text-lux-gold transition-colors duration-500">
+                <h3 className="font-serif text-2xl md:text-3xl text-lux-dark group-hover:text-lux-gold transition-colors duration-500">
                   {step.title}
                 </h3>
                 <span className="font-serif text-lux-gold text-4xl font-light tracking-widest">

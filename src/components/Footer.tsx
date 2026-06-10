@@ -68,8 +68,8 @@ export default function Footer() {
           <h4 className="font-serif text-lg mb-6 uppercase tracking-widest">Inquiries</h4>
           <ul className="flex flex-col gap-4">
             <li className="text-lux-text-muted">
-              <a href="mailto:operations@luxurafurniture.com" className="hover:text-lux-gold transition-colors">
-                operations@luxurafurniture.com
+              <a href="mailto:support@luxurafurniture.com" className="hover:text-lux-gold transition-colors">
+                support@luxurafurniture.com
               </a>
             </li>
             <li className="text-lux-text-muted">
