@@ -33,7 +33,7 @@ export default function Transformation() {
     <section ref={containerRef} className="relative h-screen bg-lux-dark overflow-hidden">
       {/* Left: Unfinished */}
       <div className="absolute inset-0">
-        <img src="/images/the canvas.jpeg" alt="The Canvas" className="w-full h-full object-cover filter grayscale opacity-50" />
+        <img src="/images/the_canvas.webp" alt="The Canvas" className="w-full h-full object-cover filter grayscale opacity-50" />
         <div className="absolute inset-0 flex items-center p-12">
           <h2 className="text-white/50 font-serif text-4xl md:text-6xl">The Canvas</h2>
         </div>
@@ -45,7 +45,7 @@ export default function Transformation() {
         className="absolute inset-0"
         style={{ clipPath: "inset(0 0 0 100%)" }}
       >
-        <img src="/images/the curation.jpeg" alt="The Curation" className="w-full h-full object-cover" />
+        <img src="/images/the_curation.webp" alt="The Curation" className="w-full h-full object-cover" />
         <div className="absolute inset-0 flex items-center justify-end p-12">
           <h2 className="text-white font-serif text-4xl md:text-6xl">The Curation</h2>
         </div>
