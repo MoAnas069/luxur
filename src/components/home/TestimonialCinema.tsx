@@ -44,8 +44,8 @@ export default function TestimonialCinema() {
   return (
     <section ref={containerRef} className="relative h-screen bg-lux-dark overflow-hidden flex items-center justify-center">
       <img 
-        src="/images/testimonial_bg_1778847033679.webp" 
-        alt="Luxury Environment" 
+        src="/images/dubai_landscape.webp" 
+        alt="Dubai Landscape" 
         className="bg-image absolute inset-0 w-full h-full object-cover opacity-40" 
       />
       <div className="absolute inset-0 bg-lux-dark/60" />

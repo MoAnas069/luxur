@@ -60,8 +60,8 @@ I would like to request a private consultation. Here are my details:
             <div>
               <h4 className="uppercase tracking-widest text-lux-gold text-sm font-semibold mb-3">Contact</h4>
               <p className="font-serif text-2xl text-lux-dark">
-                <a href="mailto:support@luxurafurnitures.com" className="hover:text-lux-gold transition-colors">
-                  support@luxurafurnitures.com
+                <a href="mailto:support@luxurafurniture.com" className="hover:text-lux-gold transition-colors">
+                  support@luxurafurniture.com
                 </a>
               </p>
             </div>
@@ -69,7 +69,7 @@ I would like to request a private consultation. Here are my details:
             <div>
               <h4 className="uppercase tracking-widest text-lux-gold text-sm font-semibold mb-3">Service region</h4>
               <p className="font-sans font-light text-lux-text-muted text-lg">
-                Canada • USA • UK • India • Australia & UAE
+                Canada • USA • UK • India • Australia • UAE
               </p>
             </div>
           </div>

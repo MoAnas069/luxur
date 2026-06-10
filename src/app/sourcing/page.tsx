@@ -28,18 +28,18 @@ const sourcingDetails = [
   },
   {
     country: "China",
-    tagline: "State-of-the-Art Metalwork & Technical Stoneware",
-    desc: "In Shenzhen and Guangdong architectural manufacturing zones, we source laser-precise metal frames, custom brass fixtures, and premium large-format sintered stone slabs that achieve high-gloss, ultra-durable luxury finishes.",
+    tagline: "Precision Furniture Manufacturing & Custom Cabinetry",
+    desc: "In the furniture manufacturing hubs of Guangdong and Foshan, we partner with elite factories specializing in luxury furniture production. From solid wood dining sets and lacquer-finished cabinetry to premium upholstered sofas and precision-crafted hardware, Chinese manufacturing delivers exceptional quality at scale.",
     icon: Gem,
-    materials: ["Integrated LED Components", "Precision Steel & Brass castings", "Large-Format Sintered Stone"],
+    materials: ["Solid Wood & Lacquer Cabinetry", "Premium Upholstered Seating", "Architectural Metal & Hardware"],
     image: "/images/china_sourcing.webp"
   },
   {
     country: "Turkey",
-    tagline: "Elite Anatolian Marble & Upholstery Fabrics",
-    desc: "Procured from heritage quarries in central Anatolia and textile mills in Istanbul, Turkish marble offers distinct, rich veining and textures. Coupled with hand-woven jacquard and chenille upholstery fabrics, Turkey represents the classical luxury core.",
+    tagline: "Elite Anatolian Marble, Upholstery & Turkish Rugs",
+    desc: "Procured from heritage quarries in central Anatolia and textile mills in Istanbul, Turkish marble offers distinct, rich veining and textures. Coupled with hand-woven jacquard and chenille upholstery fabrics and authentic hand-knotted Turkish rugs renowned for their intricate patterns and lasting durability, Turkey represents the classical luxury core.",
     icon: Anchor,
-    materials: ["Travertine & Carrara-grade Marble", "Luxury Chenille & Velvet fabrics", "Hand-tufted upholstery"],
+    materials: ["Travertine & Carrara-grade Marble", "Luxury Chenille & Velvet fabrics", "Authentic Hand-Knotted Turkish Rugs"],
     image: "/images/turkey_sourcing.webp"
   }
 ];

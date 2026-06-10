@@ -38,8 +38,8 @@ const panelsData: SourcingPanel[] = [
   {
     id: "china",
     country: "China",
-    tagline: "Precision Metalwork & Fine Stoneware",
-    materials: "Industrial grade custom steel structures, precision architectural metalwork, and premium porcelain and quartz.",
+    tagline: "Luxury Furniture Manufacturing & Custom Cabinetry",
+    materials: "High-end custom furniture manufacturing, precision-engineered solid wood and lacquer cabinetry, and luxury upholstered seating with premium hardware.",
     image: "/images/china_sourcing.webp",
     // Clean outline of China map
     mapPath: "M 50,15 C 38,12 28,15 22,25 C 16,35 10,48 8,55 C 6,62 12,70 18,72 C 24,74 28,82 30,88 C 32,94 28,102 32,108 C 36,114 44,106 48,110 C 52,114 56,122 62,120 C 68,118 72,110 76,108 C 80,106 88,112 92,106 C 96,100 98,88 95,82 C 92,76 86,70 88,62 C 90,54 98,48 94,42 C 90,36 82,42 78,38 C 74,34 72,24 65,22 C 58,20 54,18 50,15 Z",
@@ -49,7 +49,7 @@ const panelsData: SourcingPanel[] = [
     id: "turkey",
     country: "Turkey",
     tagline: "Luxury Marbles & Textiles",
-    materials: "World-famous Anatolian travertine, Carrara-grade block marble, and hand-woven luxury upholstery fabrics.",
+    materials: "World-famous Anatolian travertine, Carrara-grade block marble, hand-woven luxury upholstery fabrics, and authentic hand-knotted Turkish rugs.",
     image: "/images/turkey_sourcing.webp",
     // Rectangular peninsula representing Turkey
     mapPath: "M 10,25 C 15,22 25,23 35,21 C 45,19 65,18 75,22 C 85,26 92,30 95,35 C 98,40 96,48 94,52 C 92,56 86,58 80,60 C 74,62 65,65 55,63 C 45,61 35,64 25,62 C 15,60 8,55 6,48 C 4,41 5,28 10,25 Z",
@@ -142,7 +142,7 @@ export default function SourcingShowcase() {
               {/* Panel Content */}
               <div className="relative z-20 w-full flex flex-col justify-end text-white pointer-events-none">
                 <span className="text-[10px] tracking-[0.3em] uppercase text-lux-gold font-bold mb-2">
-                  Destination
+                  {panel.country}
                 </span>
                 
                 <h3 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white uppercase tracking-wider mb-4 transition-transform duration-700">

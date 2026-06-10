@@ -270,12 +270,7 @@ export default function HeroScroll() {
               </Link>
               <button 
                 onClick={() => {
-                  const target = document.getElementById("contact-section");
-                  if (target) {
-                    target.scrollIntoView({ behavior: "smooth" });
-                  } else {
-                    window.location.href = "/#contact-section";
-                  }
+                  window.location.href = "/contact";
                 }}
                 className="w-full sm:w-auto px-6 py-4 bg-transparent border border-white/30 text-white tracking-widest uppercase text-xs md:text-sm hover:bg-white/10 transition-colors duration-500"
               >

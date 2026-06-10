@@ -54,12 +54,7 @@ const servicesList = [
   }
 ];
 
-const timeline = [
-  { step: "01", title: "Consultation", desc: "Understanding your vision, space, and lifestyle requirements." },
-  { step: "02", title: "Curation", desc: "Presenting a tailored selection of exclusive pieces and materials." },
-  { step: "03", title: "Sourcing", desc: "Procuring or manufacturing the selected items with meticulous quality control." },
-  { step: "04", title: "Delivery", desc: "White-glove installation to finalize the composed space." },
-];
+
 
 export default function Services() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -86,20 +81,7 @@ export default function Services() {
         }
       );
 
-      gsap.fromTo(".timeline-item", 
-        { x: -50, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          stagger: 0.3,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".timeline-container",
-            start: "top 85%",
-          },
-        }
-      );
+
     }, containerRef);
 
     return () => ctx.revert();
@@ -185,26 +167,7 @@ export default function Services() {
         ))}
       </div>
 
-      {/* Timeline Section */}
-      <div className="timeline-container max-w-2xl mx-auto relative z-10">
-        <h2 className="text-4xl font-serif text-lux-dark mb-20 text-center uppercase tracking-wide">The Process</h2>
-        <div className="relative border-l border-lux-gold/30 pl-12 md:pl-20 space-y-20">
-          {timeline.map((item) => (
-            <div key={item.step} className="timeline-item relative">
-              {/* Dot */}
-              <div className="absolute -left-[54px] md:-left-[86px] top-1.5 w-3.5 h-3.5 bg-lux-bg border-2 border-lux-gold rounded-full" />
-              
-              <span className="text-lux-gold font-serif text-lg tracking-widest block mb-2 font-bold">
-                {item.step}
-              </span>
-              <h3 className="font-serif text-3xl text-lux-dark mb-3 leading-tight">{item.title}</h3>
-              <p className="font-sans font-light text-lux-text-muted text-base leading-relaxed">
-                {item.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
+
     </div>
   );
 }

@@ -35,7 +35,7 @@ export default function PrivateCataloguePage() {
   const [hasAccess, setHasAccess] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
   const [activeMagazine, setActiveMagazine] = useState<CatalogueEntry | null>(null);
-  const [userName, setUserName] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [dynamicCatalogues, setDynamicCatalogues] = useState<CatalogueEntry[]>([]);
   const [coverErrors, setCoverErrors] = useState<Record<string, boolean>>({});
 
@@ -74,6 +74,17 @@ export default function PrivateCataloguePage() {
 
   const allCatalogues = dynamicCatalogues;
 
+  // Derive categories dynamically from catalogues
+  const categories = [
+    "All",
+    ...Array.from(new Set(allCatalogues.map((c) => c.category).filter(Boolean)))
+  ];
+
+  // Filter magazines based on selected category
+  const filteredCatalogues = selectedCategory === "All"
+    ? allCatalogues
+    : allCatalogues.filter((c) => c.category === selectedCategory);
+
   // Access gate
   useEffect(() => {
     const stored = sessionStorage.getItem("luxura_private_access");
@@ -82,7 +93,6 @@ export default function PrivateCataloguePage() {
         const data = JSON.parse(stored);
         if (data.name && data.email) {
           setHasAccess(true);
-          setUserName(data.name.split(" ")[0]);
         }
       } catch {
         /* invalid */
@@ -90,6 +100,32 @@ export default function PrivateCataloguePage() {
     }
     setIsChecking(false);
   }, []);
+
+  // Handle browser back button to close active magazine
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      if (activeMagazine) {
+        setActiveMagazine(null);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [activeMagazine]);
+
+  const handleOpenMagazine = (cat: CatalogueEntry) => {
+    setActiveMagazine(cat);
+    window.history.pushState({ magazineOpen: true }, "");
+  };
+
+  const handleCloseMagazine = () => {
+    if (window.history.state?.magazineOpen) {
+      window.history.back();
+    }
+    setActiveMagazine(null);
+  };
 
   // Animations after access granted
   useEffect(() => {
@@ -164,26 +200,48 @@ export default function PrivateCataloguePage() {
 
       {/* Hero header */}
       <div className="cat-header pt-36 md:pt-44 pb-16 md:pb-20 px-6 md:px-12">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="uppercase tracking-[0.35em] text-[10px] text-lux-gold font-semibold mb-4">
-            Private Collection
+        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+          <div>
+            <div className="uppercase tracking-[0.35em] text-[10px] text-lux-gold font-semibold mb-4">
+              Private Collection
+            </div>
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-lux-dark leading-[1.1] mb-5">
+              Welcome to the <span className="italic text-lux-gold">Private Collection</span>
+            </h1>
+            <p className="text-lux-text-muted font-sans text-base md:text-lg max-w-xl leading-relaxed">
+              Browse our exclusive catalogues below. Each collection is curated from premium global manufacturers and design partners.
+            </p>
           </div>
-          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-lux-dark leading-[1.1] mb-5">
-            Welcome, <span className="italic text-lux-gold">{userName}</span>
-          </h1>
-          <p className="text-lux-text-muted font-sans text-base md:text-lg max-w-xl leading-relaxed">
-            Browse our exclusive catalogues below. Each collection is curated from premium global manufacturers and design partners.
-          </p>
+
+          {/* Category Filter Tabs */}
+          {categories.length > 1 && (
+            <div className="flex flex-wrap gap-2 md:gap-4 border-b border-lux-border/60 pb-2 self-start lg:self-end">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`relative px-4 py-2 text-xs uppercase tracking-widest font-semibold transition-colors duration-500 ${
+                    selectedCategory === cat ? "text-lux-gold" : "text-lux-text-muted hover:text-lux-dark"
+                  }`}
+                >
+                  {cat}
+                  {selectedCategory === cat && (
+                    <span className="absolute bottom-0 left-0 w-full h-[2px] bg-lux-gold animate-line-expand" />
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Magazine Grid */}
       <div className="px-6 md:px-12 pb-32">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-          {allCatalogues.map((cat) => (
+          {filteredCatalogues.map((cat) => (
             <button
               key={cat.id}
-              onClick={() => setActiveMagazine(cat)}
+              onClick={() => handleOpenMagazine(cat)}
               className="cat-card group text-left relative rounded-sm overflow-hidden bg-white shadow-[0_10px_40px_-15px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.12)] transition-shadow duration-700"
             >
               {/* Cover Image */}
@@ -242,7 +300,7 @@ export default function PrivateCataloguePage() {
         <MagazineViewer
           title={activeMagazine.title}
           src={activeMagazine.src}
-          onClose={() => setActiveMagazine(null)}
+          onClose={handleCloseMagazine}
         />
       )}
     </div>

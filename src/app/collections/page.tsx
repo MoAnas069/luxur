@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, useMemo } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { X, ArrowRight, Sparkles, Globe, Compass } from "lucide-react";
+import { X, ArrowRight, Sparkles, Globe, Compass, Maximize2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 
@@ -32,6 +31,7 @@ export default function Collections() {
   const [visibleCount, setVisibleCount] = useState<number>(12);
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const [showRightClickAlert, setShowRightClickAlert] = useState<boolean>(false);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [inquiryName, setInquiryName] = useState<string>("");
   const [inquiryEmail, setInquiryEmail] = useState<string>("");
   const [inquiryRequirements, setInquiryRequirements] = useState<string>("");
@@ -93,7 +93,9 @@ export default function Collections() {
             name: row.caption || row.title || "Untitled Piece",
             category: mapCategory(row.category),
             description: row.description || "Bespoke piece sourced directly from our global network of ateliers.",
-            image: row.image_url,
+            image: row.image_url && row.image_url.includes('magazine_img_')
+              ? `/new-collections-assets/${row.image_url.substring(row.image_url.lastIndexOf('/') + 1)}`
+              : row.image_url,
             materials: row.materials || "Curated Selection",
             dimensions: row.dimensions || "Custom spec on request",
             origin: row.origin || "Global Sourced",
@@ -120,15 +122,18 @@ export default function Collections() {
   // Only use the images/products uploaded into the database (as requested)
   const combinedProducts = dynamicProducts;
 
-  // Deduplicate products by name (trim + lowercase) & stable shuffle
+  // Deduplicate products by name and image URL & stable shuffle
   const allProducts = useMemo(() => {
     const deduped: Product[] = [];
     const seenNames = new Set<string>();
+    const seenImages = new Set<string>();
     for (const p of combinedProducts) {
       if (!p.image || p.image.trim() === "") continue;
-      const key = p.name.trim().toLowerCase();
-      if (!seenNames.has(key)) {
-        seenNames.add(key);
+      const nameKey = p.name.trim().toLowerCase();
+      const imgKey = p.image.trim().toLowerCase();
+      if (!seenNames.has(nameKey) && !seenImages.has(imgKey)) {
+        seenNames.add(nameKey);
+        seenImages.add(imgKey);
         deduped.push(p);
       }
     }
@@ -278,19 +283,29 @@ I would like to request a bespoke commission for the following product:
                 className="product-item-card group cursor-pointer flex flex-col justify-between h-full bg-white border border-lux-border/40 p-3 sm:p-4 rounded-sm hover:shadow-[0_15px_50px_-20px_rgba(0,0,0,0.06)] hover:-translate-y-1.5 transition-[transform,box-shadow,border-color,background-color] duration-700"
               >
                 {/* Image Wrapper */}
-                <div className="relative aspect-[4/5] w-full overflow-hidden bg-lux-bg mb-4 sm:mb-6 rounded-sm">
-                  <Image
+                <div className="relative aspect-[4/5] w-full overflow-hidden bg-lux-bg mb-4 sm:mb-6 rounded-sm group/cardimg">
+                  <img
                     src={imageErrors[prod.id] ? "/images/curated_space_1778847129791.webp" : prod.image}
                     alt={prod.name}
-                    fill
-                    unoptimized
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-cover transition-transform duration-1000 group-hover:scale-[1.03]"
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03]"
                     onContextMenu={handleContextMenu}
                     onError={() => {
                       setImageErrors((prev) => ({ ...prev, [prod.id]: true }));
                     }}
                   />
+                  {/* Zoom button on hover */}
+                  <div className="absolute top-3 right-3 z-10 opacity-0 group-hover/cardimg:opacity-100 transition-opacity duration-300">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // prevent opening details modal
+                        setLightboxImage(imageErrors[prod.id] ? "/images/curated_space_1778847129791.webp" : prod.image);
+                      }}
+                      className="w-8 h-8 rounded-full bg-white/80 hover:bg-white backdrop-blur-sm border border-lux-border/40 flex items-center justify-center text-lux-dark hover:text-lux-gold shadow-md hover:scale-105 transition-all duration-300"
+                      title="View Full Photo"
+                    >
+                      <Maximize2 size={13} />
+                    </button>
+                  </div>
                   {/* Subtle hover zoom overlay */}
                   <div className="absolute inset-0 bg-lux-dark/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 </div>
@@ -366,17 +381,22 @@ I would like to request a bespoke commission for the following product:
             </button>
 
             {/* Mobile Image (visible only on mobile) */}
-            <div className="block md:hidden w-full h-[35vh] relative overflow-hidden bg-lux-dark shrink-0">
-              <Image
+            <div 
+              className="block md:hidden w-full h-[35vh] relative overflow-hidden bg-lux-dark shrink-0 cursor-zoom-in group/img"
+              onClick={() => setLightboxImage(modalImageError ? "/images/curated_space_1778847129791.webp" : activeProduct.image)}
+            >
+              <img
                 src={modalImageError ? "/images/curated_space_1778847129791.webp" : activeProduct.image}
                 alt={activeProduct.name}
-                fill
-                unoptimized
-                sizes="(max-width: 768px) 100vw"
-                className="object-cover"
+                className="w-full h-full object-cover"
                 onContextMenu={handleContextMenu}
                 onError={() => setModalImageError(true)}
               />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-500 flex items-center justify-center pointer-events-none">
+                <span className="px-3 py-1.5 border border-white/30 bg-black/55 backdrop-blur-sm text-white text-[9px] tracking-[0.2em] uppercase font-semibold rounded-sm shadow-md">
+                  View Full Screen
+                </span>
+              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
             </div>
 
@@ -510,17 +530,22 @@ I would like to request a bespoke commission for the following product:
             </div>
 
             {/* Right Image Column (5 cols) */}
-            <div className="hidden md:block md:col-span-5 h-[92vh] relative overflow-hidden bg-lux-dark">
-              <Image
+            <div 
+              className="hidden md:block md:col-span-5 h-[92vh] relative overflow-hidden bg-lux-dark cursor-zoom-in group/img"
+              onClick={() => setLightboxImage(modalImageError ? "/images/curated_space_1778847129791.webp" : activeProduct.image)}
+            >
+              <img
                 src={modalImageError ? "/images/curated_space_1778847129791.webp" : activeProduct.image}
                 alt={activeProduct.name}
-                fill
-                unoptimized
-                sizes="(max-width: 1200px) 40vw, 33vw"
-                className="object-cover transition-transform duration-1000 hover:scale-105"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover/img:scale-105"
                 onContextMenu={handleContextMenu}
                 onError={() => setModalImageError(true)}
               />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-500 flex items-center justify-center pointer-events-none">
+                <span className="px-4 py-2 border border-white/30 bg-black/55 backdrop-blur-sm text-white text-[10px] tracking-[0.2em] uppercase font-semibold rounded-sm shadow-md">
+                  View Full Screen
+                </span>
+              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
               
               <div className="absolute bottom-10 left-10 text-white">
@@ -536,7 +561,29 @@ I would like to request a bespoke commission for the following product:
           </div>
         </div>
       )}
-
+      {lightboxImage && (
+        <div 
+          className="fixed inset-0 z-[120] bg-lux-dark/95 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out"
+          onClick={() => setLightboxImage(null)}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setLightboxImage(null)}
+            className="absolute top-6 right-6 z-[130] w-12 h-12 rounded-full border border-white/10 bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all duration-300"
+          >
+            <X size={20} />
+          </button>
+          
+          <div className="relative max-w-full max-h-full flex items-center justify-center animate-fade-in">
+            <img
+              src={lightboxImage}
+              alt="Full view"
+              className="max-w-[95vw] max-h-[90vh] object-contain select-none shadow-2xl rounded-sm"
+              onContextMenu={handleContextMenu}
+            />
+          </div>
+        </div>
+      )}
       <style jsx>{`
         @keyframes lineExpand {
           0% { width: 0; }

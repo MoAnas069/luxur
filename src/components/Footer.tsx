@@ -34,6 +34,17 @@ export default function Footer() {
               </svg>
               <span>Facebook</span>
             </a>
+            <a
+              href="https://www.youtube.com/@luxurafurniture"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lux-text-muted hover:text-lux-gold transition-colors inline-flex items-center gap-2 text-sm"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fillRule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768C18.254 19 12 19 12 19s-6.254 0-7.814-.418a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.418-4.814a2.507 2.507 0 0 1 1.768-1.768C5.746 5 12 5 12 5s6.254 0 7.812.418zM15.194 12 10 14.75V9.25L15.194 12z" clipRule="evenodd" />
+              </svg>
+              <span>YouTube</span>
+            </a>
           </div>
         </div>
 
@@ -57,8 +68,8 @@ export default function Footer() {
           <h4 className="font-serif text-lg mb-6 uppercase tracking-widest">Inquiries</h4>
           <ul className="flex flex-col gap-4">
             <li className="text-lux-text-muted">
-              <a href="mailto:support@luxurafurnitures.com" className="hover:text-lux-gold transition-colors">
-                support@luxurafurnitures.com
+              <a href="mailto:operations@luxurafurniture.com" className="hover:text-lux-gold transition-colors">
+                operations@luxurafurniture.com
               </a>
             </li>
             <li className="text-lux-text-muted">
@@ -66,7 +77,7 @@ export default function Footer() {
                 +1 (403) 971-7695
               </a>
             </li>
-            <li className="text-lux-text-muted mt-4">Canada • USA • UK • India • Australia & UAE</li>
+            <li className="text-lux-text-muted mt-4">Canada • USA • UK • India • Australia • UAE</li>
           </ul>
         </div>
       </div>
