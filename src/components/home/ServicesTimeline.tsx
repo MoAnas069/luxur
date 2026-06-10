@@ -57,18 +57,6 @@ export default function ServicesTimeline() {
           }
         }
       );
-
-      // Parallax effect on the architectural blueprint image
-      gsap.to(".blueprint-img", {
-        yPercent: 10,
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        }
-      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -103,28 +91,14 @@ export default function ServicesTimeline() {
           </div>
 
           {/* Blueprint/Floor Plan Graphic Frame */}
-          <div className="relative aspect-[4/3] w-full overflow-hidden border border-lux-border/60 bg-lux-dark shadow-sm rounded-sm group">
-            <div className="blueprint-img absolute inset-0 w-full h-[110%] -top-[5%]">
-              <Image
-                src="/images/arch.webp"
-                alt="Architectural Floor Plan Blueprint"
-                fill
-                sizes="(max-width: 1024px) 100vw, 40vw"
-                className="object-cover transition-transform duration-[2000ms] group-hover:scale-[1.03]"
-              />
-            </div>
-            {/* Elegant overlay gradients */}
-            <div className="absolute inset-0 bg-gradient-to-t from-lux-dark/60 via-transparent to-transparent pointer-events-none" />
-            
-            {/* Blueprint label */}
-            <div className="absolute bottom-6 left-6 text-white">
-              <span className="text-[9px] uppercase tracking-widest text-lux-gold font-semibold block mb-1">
-                Atelier Spec Sheet
-              </span>
-              <span className="text-xs font-sans font-light text-white/70">
-                Workspace & Layout Composition
-              </span>
-            </div>
+          <div className="relative aspect-square w-full overflow-hidden border border-lux-border/60 shadow-sm rounded-sm group">
+            <Image
+              src="/images/arch.webp"
+              alt="Architectural Floor Plan Blueprint"
+              fill
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              className="object-cover transition-transform duration-[2000ms] group-hover:scale-[1.03]"
+            />
           </div>
         </div>
 
