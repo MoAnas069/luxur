@@ -110,11 +110,11 @@ export default function ServicesTimeline() {
                 alt="Architectural Floor Plan Blueprint"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
-                className="object-cover opacity-75 filter contrast-125 brightness-90 transition-transform duration-[2000ms] group-hover:scale-[1.03]"
+                className="object-cover transition-transform duration-[2000ms] group-hover:scale-[1.03]"
               />
             </div>
             {/* Elegant overlay gradients */}
-            <div className="absolute inset-0 bg-gradient-to-t from-lux-dark/80 via-lux-dark/20 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-lux-dark/60 via-transparent to-transparent pointer-events-none" />
             
             {/* Blueprint label */}
             <div className="absolute bottom-6 left-6 text-white">
