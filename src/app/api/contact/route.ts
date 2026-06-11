@@ -14,15 +14,53 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 2. Insert into Supabase table
+    const trimmedEmail = email.trim().toLowerCase();
+
+    // 2. Uniqueness check: A person can only submit one inquiry per email
+    const { data: existingInquiry, error: checkError } = await supabase
+      .from("contact_inquiries")
+      .select("id")
+      .eq("email", trimmedEmail)
+      .limit(1);
+
+    if (checkError) {
+      console.error("Error checking existing email in Supabase:", checkError);
+    } else if (existingInquiry && existingInquiry.length > 0) {
+      return NextResponse.json(
+        { error: "An inquiry has already been submitted using this email address." },
+        { status: 400 }
+      );
+    }
+
+    // 3. IP-based Rate Limiting (max 1 request every 2 minutes per IP)
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0] || "127.0.0.1";
+    const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
+
+    const { data: recentInquiries, error: rateLimitError } = await supabase
+      .from("contact_inquiries")
+      .select("id")
+      .eq("ip_address", ip)
+      .gt("created_at", twoMinutesAgo);
+
+    if (rateLimitError) {
+      console.error("Error checking rate limit in Supabase:", rateLimitError);
+    } else if (recentInquiries && recentInquiries.length > 0) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait a couple minutes before submitting another inquiry." },
+        { status: 429 }
+      );
+    }
+
+    // 4. Insert into Supabase table
     const { error: dbError } = await supabase
       .from("contact_inquiries")
       .insert([
         {
           first_name: firstName.trim(),
           last_name: lastName.trim(),
-          email: email.trim().toLowerCase(),
+          email: trimmedEmail,
           details: details.trim(),
+          ip_address: ip,
         },
       ]);
 

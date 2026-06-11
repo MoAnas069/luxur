@@ -31,3 +31,7 @@ ON public.contact_inquiries
 FOR SELECT 
 TO authenticated 
 USING (true);
+
+-- 5. Add ip_address column to store submitter's IP
+ALTER TABLE public.contact_inquiries ADD COLUMN IF NOT EXISTS ip_address TEXT;
+
