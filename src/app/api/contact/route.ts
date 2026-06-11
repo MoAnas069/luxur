@@ -15,40 +15,35 @@ export async function POST(request: NextRequest) {
     }
 
     const trimmedEmail = email.trim().toLowerCase();
-
-    // 2. Uniqueness check: A person can only submit one inquiry per email
-    const { data: existingInquiry, error: checkError } = await supabase
-      .from("contact_inquiries")
-      .select("id")
-      .eq("email", trimmedEmail)
-      .limit(1);
-
-    if (checkError) {
-      console.error("Error checking existing email in Supabase:", checkError);
-    } else if (existingInquiry && existingInquiry.length > 0) {
-      return NextResponse.json(
-        { error: "An inquiry has already been submitted using this email address." },
-        { status: 400 }
-      );
-    }
-
-    // 3. IP-based Rate Limiting (max 1 request every 2 minutes per IP)
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0] || "127.0.0.1";
     const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
 
-    const { data: recentInquiries, error: rateLimitError } = await supabase
-      .from("contact_inquiries")
-      .select("id")
-      .eq("ip_address", ip)
-      .gt("created_at", twoMinutesAgo);
+    // 2. Query the RPC function (which runs SECURELY bypassing RLS on server-side)
+    const { data: checkData, error: rpcError } = await supabase
+      .rpc("check_inquiry_exists", {
+        check_email: trimmedEmail,
+        check_ip: ip,
+        check_time: twoMinutesAgo,
+      });
 
-    if (rateLimitError) {
-      console.error("Error checking rate limit in Supabase:", rateLimitError);
-    } else if (recentInquiries && recentInquiries.length > 0) {
-      return NextResponse.json(
-        { error: "Too many requests. Please wait a couple minutes before submitting another inquiry." },
-        { status: 429 }
-      );
+    if (rpcError) {
+      console.error("Error executing Supabase RPC check_inquiry_exists:", rpcError);
+    } else if (checkData && checkData.length > 0) {
+      const { email_exists, ip_rate_limited } = checkData[0];
+      
+      if (email_exists) {
+        return NextResponse.json(
+          { error: "An inquiry has already been submitted using this email address." },
+          { status: 400 }
+        );
+      }
+      
+      if (ip_rate_limited) {
+        return NextResponse.json(
+          { error: "Too many requests. Please wait a couple minutes before submitting another inquiry." },
+          { status: 429 }
+        );
+      }
     }
 
     // 4. Insert into Supabase table

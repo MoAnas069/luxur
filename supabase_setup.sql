@@ -37,3 +37,20 @@ USING (true);
 -- 5. Add ip_address column to store submitter's IP
 ALTER TABLE public.contact_inquiries ADD COLUMN IF NOT EXISTS ip_address TEXT;
 
+-- 6. Create RPC function to securely verify email uniqueness and rate limits bypassing RLS
+CREATE OR REPLACE FUNCTION public.check_inquiry_exists(check_email TEXT, check_ip TEXT, check_time TIMESTAMPTZ)
+RETURNS TABLE (email_exists BOOLEAN, ip_rate_limited BOOLEAN)
+LANGUAGE plpgsql
+SECURITY DEFINER -- Runs with high privileges to read table data
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        EXISTS(SELECT 1 FROM public.contact_inquiries WHERE email = check_email) AS email_exists,
+        EXISTS(SELECT 1 FROM public.contact_inquiries WHERE ip_address = check_ip AND created_at > check_time) AS ip_rate_limited;
+END;
+$$;
+
+-- Grant execution permissions to public/anonymous roles
+GRANT EXECUTE ON FUNCTION public.check_inquiry_exists TO anon, authenticated;
+
