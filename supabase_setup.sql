@@ -18,6 +18,7 @@ ALTER TABLE public.contact_inquiries ENABLE ROW LEVEL SECURITY;
 
 -- 3. Create Policy to allow anyone (anon role) to insert inquiries
 -- This allows the contact form on your website to save entries directly
+DROP POLICY IF EXISTS "Allow public insert" ON public.contact_inquiries;
 CREATE POLICY "Allow public insert" 
 ON public.contact_inquiries 
 FOR INSERT 
@@ -26,6 +27,7 @@ WITH CHECK (true);
 -- 4. (Optional) Create Policy to restrict reading entries to authenticated admin users only
 -- Anyone with the service role key or admin dashboard access can already read this, 
 -- but this prevents random public users from reading inquiries.
+DROP POLICY IF EXISTS "Restrict read to authenticated only" ON public.contact_inquiries;
 CREATE POLICY "Restrict read to authenticated only" 
 ON public.contact_inquiries 
 FOR SELECT 
