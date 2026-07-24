@@ -35,7 +35,7 @@ export default function Footer() {
               <span>Facebook</span>
             </a>
             <a
-              href="https://www.youtube.com/@luxurafurniture"
+              href="https://youtube.com/@luxura-1?si=XNEp_dp5SLh6qFAi"
               target="_blank"
               rel="noopener noreferrer"
               className="text-lux-text-muted hover:text-lux-gold transition-colors inline-flex items-center gap-2 text-sm"

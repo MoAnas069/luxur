@@ -112,6 +112,12 @@ export default function Collections() {
 
   function mapCategory(dbCat: string): string {
     if (!dbCat) return "Living";
+    const cat = dbCat.trim().toLowerCase();
+    if (cat.includes("living")) return "Living";
+    if (cat.includes("bedroom") || cat.includes("bed")) return "Bed";
+    if (cat.includes("dining")) return "Dining";
+    if (cat.includes("office")) return "Office";
+    if (cat.includes("lighting") || cat.includes("light")) return "Lighting";
     return dbCat.trim();
   }
 

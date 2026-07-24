@@ -27,7 +27,7 @@ const organizationSchema = {
   "sameAs": [
     "https://www.instagram.com/luxurafurniture?igsh=b2g2ODZwbGI2Ymtj&utm_source=qr",
     "https://www.facebook.com/share/1BpDjfBXTs/?mibextid=wwXIfr",
-    "https://www.youtube.com/@luxurafurniture"
+    "https://youtube.com/@luxura-1?si=XNEp_dp5SLh6qFAi"
   ]
 };
 

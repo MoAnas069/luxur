@@ -55,7 +55,7 @@ export default function TestimonialCinema() {
           "They did not just furnish our home; they established its soul. The level of global access and restraint is unmatched."
         </p>
         <p className="quote text-lux-gold uppercase tracking-widest text-sm font-semibold">
-          — Private Residence, UAE
+          — Kevin, UAE
         </p>
       </div>
     </section>

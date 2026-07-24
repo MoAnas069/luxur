@@ -3,7 +3,8 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import Image from "next/image";
+import Link from "next/link";
+import { Lock, ArrowRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -86,8 +87,8 @@ export default function PrivateCatalogue() {
         {/* Left Side: Editorial Typography */}
         <div className="max-w-xl">
           <h2 className="reveal-text font-serif text-5xl md:text-7xl text-lux-dark leading-[1.1] mb-8">
-            Curated Global <br />
-            <span className="italic text-lux-gold">Luxury</span>{" "}
+            Private Access to <br />
+            <span className="italic text-lux-gold">Global Luxury</span>{" "}
             Collections
           </h2>
 
@@ -97,7 +98,7 @@ export default function PrivateCatalogue() {
           </p>
 
           <p className="reveal-text font-sans text-lux-text-muted font-light text-lg leading-relaxed mb-16">
-            Refined furniture collections, bespoke pieces,
+            Exclusive access to refined furniture collections, bespoke pieces,
             luxury lighting, architectural finishes, and curated interior
             selections.
           </p>
@@ -105,9 +106,9 @@ export default function PrivateCatalogue() {
           {/* Statistics */}
           <div className="grid grid-cols-2 gap-y-10 gap-x-8 border-t border-lux-border pt-12">
             {[
-              { value: "30000+", label: "Curated Pieces" },
+              { value: "5000+", label: "Curated Pieces" },
               { value: "Global", label: "Manufacturing Network" },
-              { value: "Bespoke", label: "Luxury Collections" },
+              { value: "Private", label: "Luxury Collections" },
               { value: "Monthly", label: "Catalog Updates" },
             ].map((stat, idx) => (
               <div key={idx} className="reveal-text">
@@ -122,17 +123,48 @@ export default function PrivateCatalogue() {
           </div>
         </div>
 
-        {/* Right Side: Editorial Showcase Image */}
-        <div className="access-panel relative h-[500px] md:h-[600px] w-full overflow-hidden border border-lux-border/60 rounded-sm">
-          <Image
-            src="/images/curated_collections.webp"
-            alt="Curated Luxury Living Room"
-            fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover transition-transform duration-[2500ms] ease-out group-hover:scale-105"
-          />
-          {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-lux-dark/15 via-transparent to-transparent pointer-events-none" />
+        {/* Right Side: Access Panel — CTA */}
+        <div className="access-panel relative">
+          {/* Glass Panel Base */}
+          <div className="absolute inset-0 bg-white/60 backdrop-blur-xl border border-white/80 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.06)] rounded-sm pointer-events-none" />
+
+          {/* Inner Content */}
+          <div className="relative p-12 md:p-16 min-h-[500px] flex flex-col items-center justify-center text-center">
+            <div className="w-20 h-20 rounded-full border border-lux-gold/20 flex items-center justify-center mb-8">
+              <Lock size={26} className="text-lux-gold" strokeWidth={1.5} />
+            </div>
+
+            <div className="uppercase tracking-[0.35em] text-[10px] text-lux-gold font-semibold mb-4">
+              Invitation Only
+            </div>
+
+            <h3 className="font-serif text-3xl md:text-4xl text-lux-dark mb-5 leading-tight">
+              Private Catalogue <br />
+              <span className="italic text-lux-gold">Access</span>
+            </h3>
+
+            <p className="font-sans font-light text-lux-text-muted text-base leading-relaxed max-w-sm mx-auto mb-10">
+              Our curated luxury catalogues are available exclusively to
+              verified clients. Request access to browse our complete magazine
+              collection.
+            </p>
+
+            <Link
+              href="/private-access"
+              className="w-full max-w-xs py-5 bg-lux-dark text-white uppercase tracking-[0.2em] text-[11px] font-semibold relative overflow-hidden group/btn flex items-center justify-center gap-3 rounded-sm"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-lux-gold-deep via-lux-gold to-lux-gold-deep opacity-0 group-hover/btn:opacity-100 transition-opacity duration-1000" />
+              <span className="relative z-10">Request Private Access</span>
+              <ArrowRight
+                size={14}
+                className="relative z-10 group-hover/btn:translate-x-1 transition-transform"
+              />
+            </Link>
+
+            <p className="text-[10px] text-lux-text-muted/40 mt-6 tracking-wider font-sans">
+              Verified access • Non-downloadable viewing
+            </p>
+          </div>
         </div>
       </div>
     </section>

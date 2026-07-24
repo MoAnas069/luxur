@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
             Authorization: `Bearer ${resendApiKey}`,
           },
           body: JSON.stringify({
-            from: "Luxura Furniture <onboarding@resend.dev>",
+            from: "Luxura Furniture <support@luxurafurniture.com>",
             to: receiverEmail,
             subject: `Private Consultation Request - ${firstName} ${lastName}`,
             html: `

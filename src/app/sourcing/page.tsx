@@ -109,9 +109,6 @@ export default function SourcingPage() {
       
       {/* Hero Section */}
       <section className="pt-40 pb-28 px-6 md:px-12 max-w-[1400px] mx-auto text-center">
-        <span className="sourcing-hero-text uppercase tracking-[0.35em] text-[10px] text-lux-gold font-semibold mb-4 block">
-          Global Supply Chain
-        </span>
         <h1 className="sourcing-hero-text font-serif text-5xl md:text-8xl text-lux-dark mb-8 tracking-tight leading-none">
           Global Sourcing, <br />
           <span className="italic text-lux-gold font-light">Exquisite</span> Execution

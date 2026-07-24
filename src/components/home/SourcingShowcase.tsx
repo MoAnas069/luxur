@@ -66,9 +66,6 @@ export default function SourcingShowcase() {
       {/* Top Heading Section */}
       <div className="container mx-auto max-w-[1600px] mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
         <div>
-          <span className="uppercase tracking-[0.35em] text-[10px] text-lux-gold font-semibold mb-4 block">
-            Global Supply Chain
-          </span>
           <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl text-lux-dark uppercase tracking-wide">
             Your Global Furniture <br /> Sourcing Partner
           </h2>
