@@ -30,17 +30,107 @@ interface CatalogueEntry {
   tier: string;
 }
 
-// ─── TIER PARSER ───
+// ─── TIER & CATEGORY RESOLUTION (Google Drive Structure) ───
 const TIER_VALUES = ["Elite", "Premium", "Signature"];
-function parseTier(raw: string): { tier: string; cat: string } {
-  const val = (raw || "").replace(/\bcatalogue\b/i, "").trim();
-  for (const t of TIER_VALUES) {
-    if (val.toLowerCase().startsWith(t.toLowerCase())) {
-      const rest = val.slice(t.length).replace(/^\s*[-\u2013]?\s*/, "").trim();
-      return { tier: t, cat: rest };
+
+function parseTierAndCategory(row: any): { tier: string; cat: string } {
+  let rawType = (row.type || "").trim();
+  let rawCat = (row.category || "").trim();
+  const title = (row.title || "").toLowerCase();
+  const pdf = (row.pdf_url || "").toLowerCase();
+  const issue = (row.issue || "").toLowerCase();
+  const desc = (row.description || "").toLowerCase();
+  const fullText = `${title} ${pdf} ${issue} ${desc}`;
+
+  let tier = "Premium";
+  let cat = rawCat || "Living";
+
+  // Check explicit row.type first if provided
+  if (rawType && TIER_VALUES.some((t) => t.toLowerCase() === rawType.toLowerCase())) {
+    tier = rawType.charAt(0).toUpperCase() + rawType.slice(1).toLowerCase();
+  } else {
+    // 1. ELITE TIER (Fanni Ultra Luxury)
+    if (
+      fullText.includes("fanni") ||
+      fullText.includes("ultra luxury") ||
+      pdf.includes("volume-13") ||
+      pdf.includes("volume-14")
+    ) {
+      tier = "Elite";
+    }
+    // 2. SIGNATURE TIER (LU Bed/Mix/Sofa/Dining, MEI Beds/Chairs/Coffee Table/Mixes, Mei LUXE)
+    else if (
+      fullText.includes("lu_bed") || fullText.includes("lu bed") ||
+      fullText.includes("lu_mix") || fullText.includes("lu mix") ||
+      fullText.includes("lu_sofa") || fullText.includes("lu sofa") ||
+      fullText.includes("lu-desiner") || fullText.includes("lu designer") ||
+      fullText.includes("mei-beds") || fullText.includes("mei bed") ||
+      fullText.includes("mei-chair") || fullText.includes("mei chair") ||
+      fullText.includes("mei-coffee") || fullText.includes("mei coffee") ||
+      fullText.includes("mei-mixs") || fullText.includes("mei mix") ||
+      fullText.includes("mei luxe") || fullText.includes("luxe collection") ||
+      pdf.includes("volume-19") || pdf.includes("volume-20") || pdf.includes("volume-21") ||
+      pdf.includes("volume-22") || pdf.includes("volume-23") || pdf.includes("volume-25") ||
+      pdf.includes("volume-26") || pdf.includes("volume-27") || pdf.includes("volume-37")
+    ) {
+      tier = "Signature";
+    }
+    // 3. PREMIUM TIER (Default for all other furniture lookbooks: Anni, Becqi, Cabinets, Cassie, Eco, Lilyaiji, Lisa, Michale, Ufan, Wine Cabinets, DR series, Office, etc.)
+    else {
+      tier = "Premium";
     }
   }
-  return { tier: "Signature", cat: val };
+
+  // Normalize Category for Furniture / Lighting / Decor
+  if (
+    rawCat.toLowerCase().includes("lighting") ||
+    fullText.includes("lighting") ||
+    fullText.includes("aura canada") ||
+    fullText.includes("halo series") ||
+    fullText.includes("chen lg") ||
+    fullText.includes("daisy ed") ||
+    fullText.includes("jenn i") ||
+    fullText.includes("mili outdoor") ||
+    fullText.includes("xana") ||
+    fullText.includes("lumina")
+  ) {
+    cat = "Lighting";
+  } else if (
+    rawCat.toLowerCase().includes("decor") ||
+    fullText.includes("rug") ||
+    fullText.includes("carpet") ||
+    fullText.includes("aquarium") ||
+    fullText.includes("acquarium") ||
+    fullText.includes("plant") ||
+    fullText.includes("pots") ||
+    fullText.includes("fountain") ||
+    fullText.includes("toilet") ||
+    fullText.includes("massage")
+  ) {
+    cat = "Decor";
+  } else if (
+    fullText.includes("bed") ||
+    fullText.includes("bedroom") ||
+    fullText.includes("nocturne") ||
+    fullText.includes("ufan") ||
+    fullText.includes("dresser") ||
+    fullText.includes("bedside")
+  ) {
+    cat = "Bed";
+  } else if (
+    fullText.includes("dining") ||
+    fullText.includes("bar chair") ||
+    fullText.includes("oak & iron") ||
+    fullText.includes("marbre")
+  ) {
+    cat = "Dining";
+  } else if (fullText.includes("office")) {
+    cat = "Office";
+  } else {
+    cat = "Living";
+  }
+
+  return { tier, cat };
 }
 
 // ─── TIER DEFINITIONS ───
@@ -133,27 +223,7 @@ export default function PrivateCataloguePage() {
 
         if (data) {
           const mapped: CatalogueEntry[] = data.map((row: any) => {
-            let type = (row.type || "").trim();
-            let cat = (row.category || "").trim();
-            if (!type) {
-              const parsed = parseTier(cat);
-              type = parsed.tier;
-              cat = parsed.cat;
-            }
-
-            // Normalize category for standard matching
-            const normCat = cat.toLowerCase();
-            if (normCat.includes("living")) {
-              cat = "Living";
-            } else if (normCat.includes("bedroom") || normCat.includes("bed")) {
-              cat = "Bed";
-            } else if (normCat.includes("dining")) {
-              cat = "Dining";
-            } else if (normCat.includes("office")) {
-              cat = "Office";
-            } else if (normCat.includes("lighting") || normCat.includes("light")) {
-              cat = "Lighting";
-            }
+            const { tier, cat } = parseTierAndCategory(row);
 
             // Prefer custom uploaded covers from storage over static local mapping
             const hasCustomCover = row.cover_url && (row.cover_url.startsWith("http") || row.cover_url.includes("/storage/"));
@@ -169,7 +239,7 @@ export default function PrivateCataloguePage() {
               src: row.pdf_url,
               year: row.published_at ? new Date(row.published_at).getFullYear().toString() : new Date().getFullYear().toString(),
               category: cat,
-              tier: type,
+              tier: tier,
             };
           });
           setDynamicCatalogues(mapped);
