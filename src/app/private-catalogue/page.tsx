@@ -183,19 +183,39 @@ export default function PrivateCataloguePage() {
   }, []);
 
 
+  // Helper function to extract leading numbers for Google Drive style sorting
+  const getLeadingNumber = (str: string): number | null => {
+    const match = (str || "").trim().match(/^(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+  };
+
+  // Sort helper function matching Drive index
+  const sortCatalogues = (items: CatalogueEntry[]): CatalogueEntry[] => {
+    return [...items].sort((a, b) => {
+      const numA = getLeadingNumber(a.title);
+      const numB = getLeadingNumber(b.title);
+      if (numA !== null && numB !== null) {
+        return numA - numB;
+      }
+      if (numA !== null) return -1;
+      if (numB !== null) return 1;
+      return a.title.localeCompare(b.title, undefined, { numeric: true, sensitivity: "base" });
+    });
+  };
+
   // Filter magazines dynamically based on current section, selected tier, and sub-category
   const filteredCatalogues = useMemo(() => {
     if (!currentSection) return [];
     
     if (currentSection === "lighting") {
-      return dynamicCatalogues.filter(c => c.category === "Lighting");
+      return sortCatalogues(dynamicCatalogues.filter(c => c.category === "Lighting"));
     }
     
     if (currentSection === "others") {
       const furnitureCategories = ["Living", "Bed", "Dining", "Office"];
-      return dynamicCatalogues.filter(
+      return sortCatalogues(dynamicCatalogues.filter(
         c => c.category !== "Lighting" && !furnitureCategories.includes(c.category)
-      );
+      ));
     }
     
     if (currentSection === "furniture") {
@@ -214,7 +234,7 @@ export default function PrivateCataloguePage() {
         list = list.filter(c => c.category === targetCat);
       }
       
-      return list;
+      return sortCatalogues(list);
     }
     
     return [];
