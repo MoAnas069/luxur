@@ -185,6 +185,25 @@ export default function Collections() {
 
     setIsSubmitting(true);
 
+    try {
+      // 1. Post product inquiry to backend endpoint
+      await fetch("/api/product-inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientName: inquiryName.trim(),
+          clientEmail: inquiryEmail.trim(),
+          requirements: inquiryRequirements.trim(),
+          productName: activeProduct.name,
+          productCategory: activeProduct.category,
+          productImage: activeProduct.image,
+          productId: activeProduct.id,
+        }),
+      });
+    } catch (err) {
+      console.error("Error saving product inquiry to backend:", err);
+    }
+
     const message = `Hello Luxura Team,
 
 I would like to request a bespoke commission for the following product:
@@ -197,9 +216,8 @@ I would like to request a bespoke commission for the following product:
     const waUrl = `https://wa.me/14039717695?text=${encodeURIComponent(message)}`;
     window.open(waUrl, "_blank");
 
-    // Mockup success for demo
+    // Success UI & GSAP micro-animation
     setSubmitSuccess(true);
-    // Success GSAP micro-animation
     gsap.fromTo(
       ".success-card-content",
       { scale: 0.9, opacity: 0 },
