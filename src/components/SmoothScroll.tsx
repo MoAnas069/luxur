@@ -28,7 +28,22 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     requestAnimationFrame(raf);
 
+    // Automatically pause Lenis when modals/overlays hide body scroll
+    const observer = new MutationObserver(() => {
+      if (document.body.style.overflow === "hidden") {
+        lenis.stop();
+      } else {
+        lenis.start();
+      }
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+
     return () => {
+      observer.disconnect();
       lenis.destroy();
       lenisRef.current = null;
     };
@@ -44,3 +59,4 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
   return <>{children}</>;
 }
+

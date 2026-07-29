@@ -45,6 +45,18 @@ export default function Collections() {
     setModalImageError(false);
   }, [activeProduct]);
 
+  // Lock body scroll when product modal or lightbox is active
+  useEffect(() => {
+    if (activeProduct || lightboxImage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [activeProduct, lightboxImage]);
+
   // Filter functionality with GSAP transition
   useEffect(() => {
     setVisibleCount(12);
@@ -372,9 +384,18 @@ I would like to request a bespoke commission for the following product:
 
       {/* ─── LUXURY PRODUCT DETAILS MODAL ─── */}
       {activeProduct && (
-        <div className="fixed inset-0 z-[100] bg-lux-dark/70 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+        <div 
+          data-lenis-prevent
+          className="fixed inset-0 z-[100] bg-lux-dark/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-hidden"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeModal();
+          }}
+        >
           {/* Main Modal Panel */}
-          <div className="bg-lux-bg-alt border border-lux-border/60 max-w-5xl w-full rounded-sm shadow-2xl overflow-hidden relative flex flex-col md:grid md:grid-cols-12 h-[92vh] md:h-auto max-h-[92vh]">
+          <div 
+            data-lenis-prevent
+            className="bg-lux-bg-alt border border-lux-border/60 max-w-5xl w-full rounded-sm shadow-2xl overflow-hidden relative flex flex-col md:grid md:grid-cols-12 h-[90vh] md:h-[85vh] max-h-[850px]"
+          >
             
             {/* Close Button */}
             <button
@@ -405,7 +426,11 @@ I would like to request a bespoke commission for the following product:
             </div>
 
             {/* Left Specs & Inquiry Column (7 cols) */}
-            <div className="flex-1 md:col-span-7 p-6 sm:p-8 md:p-12 overflow-y-auto min-h-0 md:max-h-[92vh]">
+            <div 
+              data-lenis-prevent
+              className="flex-1 md:col-span-7 p-6 sm:p-8 md:p-12 overflow-y-auto h-full max-h-full overscroll-contain"
+              style={{ overscrollBehavior: "contain" }}
+            >
               <span className="uppercase tracking-[0.35em] text-[9px] text-lux-gold font-semibold mb-4 block">
                 Singular Specimen
               </span>
@@ -535,7 +560,7 @@ I would like to request a bespoke commission for the following product:
 
             {/* Right Image Column (5 cols) */}
             <div 
-              className="hidden md:block md:col-span-5 h-[92vh] relative overflow-hidden bg-lux-dark cursor-zoom-in group/img"
+              className="hidden md:block md:col-span-5 h-full relative overflow-hidden bg-lux-dark cursor-zoom-in group/img"
               onClick={() => setLightboxImage(modalImageError ? "/images/curated_space_1778847129791.webp" : activeProduct.image)}
             >
               <img

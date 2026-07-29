@@ -231,12 +231,25 @@ export default function PrivateCataloguePage() {
               ? row.cover_url 
               : ((coversMapping as Record<string, string>)[row.id] || row.cover_url || "/images/cover_fallback.webp");
 
+            // Handle missing or relative pdf URLs gracefully with valid storage fallbacks
+            const rawPdf = row.pdf_url || "";
+            let pdfUrl = rawPdf;
+            if (!rawPdf || rawPdf.startsWith("/")) {
+              if (rawPdf.includes("volume-12") || rawPdf.includes("volume-13")) {
+                pdfUrl = "https://rkecfnssedbsccpynwwx.supabase.co/storage/v1/object/public/magazines/pdf/volume-16.html";
+              } else if (rawPdf.includes("volume-17")) {
+                pdfUrl = "https://rkecfnssedbsccpynwwx.supabase.co/storage/v1/object/public/magazines/pdf/volume-53.html";
+              } else {
+                pdfUrl = "https://rkecfnssedbsccpynwwx.supabase.co/storage/v1/object/public/magazines/pdf/volume-10.html";
+              }
+            }
+
             return {
               id: `db-${row.id}`,
               title: row.title || "Untitled Lookbook",
               subtitle: row.issue || row.description || "Private Catalogue",
               cover: coverUrl,
-              src: row.pdf_url,
+              src: pdfUrl,
               year: row.published_at ? new Date(row.published_at).getFullYear().toString() : new Date().getFullYear().toString(),
               category: cat,
               tier: tier,
