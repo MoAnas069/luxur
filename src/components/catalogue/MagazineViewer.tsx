@@ -13,6 +13,7 @@ interface MagazineViewerProps {
 export default function MagazineViewer({ title, src, onClose }: MagazineViewerProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [hasError, setHasError] = useState<boolean>(false);
+  const [blobUrl, setBlobUrl] = useState<string | null>(null);
 
   // Normalize src URL with fallback for legacy or missing relative links
   const normalizedSrc = (() => {
@@ -30,6 +31,49 @@ export default function MagazineViewer({ title, src, onClose }: MagazineViewerPr
     }
     return src;
   })();
+
+  // Fetch HTML text and convert to a text/html Blob URL so browser renders visual HTML instead of plain text code
+  useEffect(() => {
+    if (!normalizedSrc) return;
+
+    if (normalizedSrc.toLowerCase().endsWith(".pdf")) {
+      setBlobUrl(normalizedSrc);
+      setIsLoading(false);
+      return;
+    }
+
+    let isMounted = true;
+    let createdUrl: string | null = null;
+
+    setIsLoading(true);
+    setHasError(false);
+
+    fetch(normalizedSrc)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.text();
+      })
+      .then((htmlText) => {
+        if (!isMounted) return;
+        const blob = new Blob([htmlText], { type: "text/html;charset=utf-8" });
+        createdUrl = URL.createObjectURL(blob);
+        setBlobUrl(createdUrl);
+      })
+      .catch((err) => {
+        console.error("Error loading magazine HTML content:", err);
+        if (isMounted) setHasError(true);
+      })
+      .finally(() => {
+        if (isMounted) setIsLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+      if (createdUrl) {
+        URL.revokeObjectURL(createdUrl);
+      }
+    };
+  }, [normalizedSrc]);
 
   // Anti-download protections & body scroll lock
   useEffect(() => {
@@ -83,13 +127,13 @@ export default function MagazineViewer({ title, src, onClose }: MagazineViewerPr
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm text-white/80 gap-3">
             <div className="w-8 h-8 border-2 border-lux-gold/30 border-t-lux-gold rounded-full animate-spin" />
             <span className="font-sans text-xs uppercase tracking-[0.2em] text-lux-gold font-medium">
-              Loading Publication...
+              Rendering Visual Lookbook...
             </span>
           </div>
         )}
 
         {hasError ? (
-          <div className="text-center p-8 max-w-md">
+          <div className="text-center p-8 max-w-md z-20">
             <AlertCircle size={32} className="text-red-400 mx-auto mb-4" />
             <h3 className="text-white font-serif text-xl mb-2">Publication Unavailable</h3>
             <p className="text-white/60 text-xs font-sans mb-6">
@@ -99,6 +143,7 @@ export default function MagazineViewer({ title, src, onClose }: MagazineViewerPr
               onClick={() => {
                 setHasError(false);
                 setIsLoading(true);
+                setBlobUrl(null);
               }}
               className="px-6 py-2.5 bg-lux-gold text-black uppercase tracking-widest text-[10px] font-semibold rounded-sm hover:bg-white transition-colors"
             >
@@ -106,17 +151,14 @@ export default function MagazineViewer({ title, src, onClose }: MagazineViewerPr
             </button>
           </div>
         ) : (
-          <iframe
-            src={normalizedSrc}
-            className="w-full h-full border-0"
-            style={{ pointerEvents: "auto" }}
-            title={title}
-            onLoad={() => setIsLoading(false)}
-            onError={() => {
-              setIsLoading(false);
-              setHasError(true);
-            }}
-          />
+          blobUrl && (
+            <iframe
+              src={blobUrl}
+              className="w-full h-full border-0"
+              style={{ pointerEvents: "auto" }}
+              title={title}
+            />
+          )
         )}
 
         {/* Anti-download notice */}
@@ -127,5 +169,3 @@ export default function MagazineViewer({ title, src, onClose }: MagazineViewerPr
     </div>
   );
 }
-
-
