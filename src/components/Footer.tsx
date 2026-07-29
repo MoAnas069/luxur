@@ -73,11 +73,11 @@ export default function Footer() {
               </a>
             </li>
             <li className="text-lux-text-muted">
-              <a href="https://wa.me/14039717695" target="_blank" rel="noopener noreferrer" className="hover:text-lux-gold transition-colors">
-                +1 (403) 971-7695
-              </a>
+              <Link href="/admin/inquiries" className="hover:text-lux-gold transition-colors flex items-center gap-1.5 font-semibold text-lux-gold">
+                <span>✦ Concierge Inquiries Portal</span>
+              </Link>
             </li>
-            <li className="text-lux-text-muted mt-4">Canada • USA • UK • India • Australia • UAE</li>
+            <li className="text-lux-text-muted mt-2">Canada • USA • UK • India • Australia • UAE</li>
           </ul>
         </div>
       </div>

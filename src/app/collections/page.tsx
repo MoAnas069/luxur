@@ -186,8 +186,8 @@ export default function Collections() {
     setIsSubmitting(true);
 
     try {
-      // 1. Post product inquiry to backend endpoint
-      await fetch("/api/product-inquiry", {
+      // Post product inquiry to backend endpoint
+      const res = await fetch("/api/product-inquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -200,21 +200,13 @@ export default function Collections() {
           productId: activeProduct.id,
         }),
       });
+
+      if (!res.ok) {
+        console.warn("Backend response not OK when saving product inquiry.");
+      }
     } catch (err) {
       console.error("Error saving product inquiry to backend:", err);
     }
-
-    const message = `Hello Luxura Team,
-
-I would like to request a bespoke commission for the following product:
-- Product: ${activeProduct.name}
-- Category: ${activeProduct.category}
-- Name: ${inquiryName}
-- Email: ${inquiryEmail}
-- Requirements: ${inquiryRequirements || "None"}`;
-
-    const waUrl = `https://wa.me/14039717695?text=${encodeURIComponent(message)}`;
-    window.open(waUrl, "_blank");
 
     // Success UI & GSAP micro-animation
     setSubmitSuccess(true);
